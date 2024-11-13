@@ -56,4 +56,20 @@ public class LoginController {
 
     }
 
+    @GetMapping("/stat")
+    public ResponseEntity<?> getStat() {
+        Map<String, Object> response = new LinkedHashMap<>();
+
+        try {
+            User user = (User) session.getAttribute("userInfo");
+            response.put("code", "SU");
+            response.put("message", "Success.");
+            response.put("loginUser", user);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        } catch (Exception e) {
+            response.put("code", "Error");
+            response.put("message", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
 }
