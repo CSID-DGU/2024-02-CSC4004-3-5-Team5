@@ -5,8 +5,6 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-
 @Getter
 @Setter
 @RequiredArgsConstructor
@@ -14,14 +12,17 @@ import java.util.List;
 public class News {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "newsID", nullable = false)
+    @Column(name = "newsID")
     private Integer newsID;
 
-    @Column(name = "newsTitle", nullable = false)
+    @Column(name = "newsTitle")
     private String newsTitle;
 
+    @Column(name = "newsShort")
+    private String newsShort;
+
     @Lob
-    @Column(name = "newsFull", nullable = false)
+    @Column(name = "newsFull")
     private String newsFull;
 
     @Column(name = "quizQuestion")
