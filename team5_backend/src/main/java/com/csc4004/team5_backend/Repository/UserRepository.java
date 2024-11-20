@@ -30,4 +30,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Transactional
     @Modifying
     void updateLastAttendence(@Param("id") Long id, @Param("today") LocalDate today);
+
 }
