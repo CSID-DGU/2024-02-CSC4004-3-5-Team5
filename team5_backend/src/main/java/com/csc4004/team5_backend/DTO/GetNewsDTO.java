@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -13,6 +14,8 @@ import java.util.List;
 public class GetNewsDTO {
     @NotBlank
     private String newsTitle;
+    @NotBlank
+    private LocalDateTime newsDate;
     @NotBlank
     private String newsShort;
     @NotBlank

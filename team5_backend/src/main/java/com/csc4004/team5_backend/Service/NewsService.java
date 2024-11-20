@@ -7,7 +7,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @Slf4j
@@ -22,9 +23,17 @@ public class NewsService {
                 .quizQuestion(getNewsDTO.getQuizQuestion())
                 .quizAnswer(getNewsDTO.getQuizAnswer())
                 .quizOption(getNewsDTO.getQuizOption().toString())
+                .newsDate(getNewsDTO.getNewsDate())
                 .build();
 
         News newsTuple = newsRepository.save(news);
         return newsTuple.getNewsID();
+    }
+
+    public List<News> getNowNews(LocalDateTime now) {
+        LocalDateTime hourAgo = now.minusHours(1);
+        log.info("hourAgo -- " + hourAgo);
+        log.info("timeNow -- " + now);
+        return newsRepository.findByNewsDateBetween(hourAgo, now);
     }
 }

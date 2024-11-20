@@ -1,16 +1,20 @@
 package com.csc4004.team5_backend.Controller;
 
 import com.csc4004.team5_backend.DTO.GetNewsDTO;
+import com.csc4004.team5_backend.Entity.News;
 import com.csc4004.team5_backend.Service.NewsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -46,6 +50,28 @@ public class NewsController {
                 response.put("Stored newsID", newsID);
                 return ResponseEntity.status(HttpStatus.CREATED).body(response);
             }
+        } catch (Exception e) {
+            response.put("code", "Error");
+            response.put("message", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
+    @GetMapping("/news")
+    public ResponseEntity<?> getNowNews() {
+        Map<String, Object> response = new LinkedHashMap<>();
+        LocalDateTime now = LocalDateTime.now(); // "2024-11-20T20:04:46.561371"
+
+        try {
+            List<News> newsList = newsService.getNowNews(now);
+            if (newsList.isEmpty()) {
+                throw new Exception("news not found : " + now);
+            }
+            response.put("code", "SU");
+            response.put("message", newsList.size() + " news found Succeed.");
+            response.put("request time", now);
+            response.put("newsList", newsList);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
         } catch (Exception e) {
             response.put("code", "Error");
             response.put("message", e.getMessage());

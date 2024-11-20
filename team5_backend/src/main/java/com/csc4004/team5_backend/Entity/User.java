@@ -9,6 +9,8 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
+
 @Getter
 @Setter
 @RequiredArgsConstructor
@@ -32,4 +34,13 @@ public class User {
 
     @Column(name = "exp", columnDefinition = "int default 0")
     private Integer exp;
+
+    @Column(name = "winCount", columnDefinition = "int default 0")
+    private Integer winCount;
+
+    @Column(name = "lastAttendence")
+    private LocalDate lastAttendence;
+
+    @Column(name = "consecutiveDay", columnDefinition = "int default 1")
+    private Integer consecutiveDay;
 }

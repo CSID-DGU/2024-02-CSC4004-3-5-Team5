@@ -19,6 +19,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -99,20 +100,35 @@ public class LoginService {
                 .build();
     }
 
-    public Optional<User> register(KakaoUserDTO kakaoUserDTO) {
+    public User register(KakaoUserDTO kakaoUserDTO) {
         Long id = kakaoUserDTO.getId();
         Optional<User> userInfo = userRepository.findById(id);
+        log.info("login User -----" + userInfo);
+        LocalDate today = LocalDate.now();
 
         // Register
-        log.info(userInfo.toString());
         if (userInfo.isEmpty()) {
             User newUser = new User();
             newUser.setUserID(id);
             newUser.setUserName(kakaoUserDTO.getNickname());
             newUser.setProfileImage(kakaoUserDTO.getProfile_image());
+            newUser.setLastAttendence(today);
             userRepository.save(newUser);
+            return newUser;
         }
-        return userInfo;
+        // login
+        else {
+            LocalDate previousDate = userRepository.findLastAttendenceById(id);
+            if (previousDate.equals(today.minusDays(1))) {
+                userRepository.updateConsecutiveDay(id);
+            }
+            else {
+                userRepository.resetConsecutiveDay(id);
+            }
+            userRepository.updateLastAttendence(id, today);
+            return userInfo.get();
+        }
+
     }
 
     public List<User> getRank() {

@@ -1,17 +1,15 @@
 package com.csc4004.team5_backend.Entity;
 
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
-@RequiredArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 @Entity
 public class News {
@@ -21,8 +19,7 @@ public class News {
     private Integer newsID;
 
     @Column(name = "newsDate")
-    @CreationTimestamp
-    private Instant newsDate;
+    private LocalDateTime newsDate;
 
     @Column(name = "newsTitle")
     private String newsTitle;
