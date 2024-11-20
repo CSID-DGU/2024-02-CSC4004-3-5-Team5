@@ -6,7 +6,6 @@ import lombok.ToString;
 
 @Data
 @Builder
-@ToString
 public class KakaoUserDTO {
     public Long id; // 고유 id
     public String nickname; // 카카오톡 상의 이름
