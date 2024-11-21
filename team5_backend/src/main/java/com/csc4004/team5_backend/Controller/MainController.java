@@ -2,14 +2,15 @@ package com.csc4004.team5_backend.Controller;
 
 import com.csc4004.team5_backend.Entity.User;
 import com.csc4004.team5_backend.Service.LoginService;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,9 +30,41 @@ public class MainController {
             if (ranking.isEmpty()) {
                 throw new NullPointerException("User field is empty");
             }
+
+            List<Map<String, Object>> rankList = ranking.stream()
+                    .map(user -> {
+                        Map<String, Object> userMap = new LinkedHashMap<>();
+                        userMap.put("userName", user.getUserName());
+                        userMap.put("profileImage", user.getProfileImage());
+                        userMap.put("level", user.getLevel());
+                        userMap.put("exp", user.getExp());
+                        return userMap;
+                    })
+                    .toList();
+
             response.put("code", "SU");
             response.put("message", "Success.");
-            response.put("ranking", ranking);
+            response.put("ranking", rankList);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        } catch (Exception e) {
+            response.put("code", "Error");
+            response.put("message", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
+    @GetMapping("/stat")
+    public ResponseEntity<?> getStat(HttpSession session) {
+        Map<String, Object> response = new LinkedHashMap<>();
+
+        try {
+            User user = (User) session.getAttribute("userInfo");
+            if (user == null) {
+                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not logged in");
+            }
+            response.put("code", "SU");
+            response.put("message", "Success.");
+            response.put("loginUser", user);
             return ResponseEntity.status(HttpStatus.OK).body(response);
         } catch (Exception e) {
             response.put("code", "Error");

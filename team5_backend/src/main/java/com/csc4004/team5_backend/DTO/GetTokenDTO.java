@@ -1,9 +1,12 @@
 package com.csc4004.team5_backend.DTO;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
 import lombok.Data;
+import lombok.ToString;
 
 @Data
+@Builder
 public class GetTokenDTO {
 
     @JsonProperty("access_token")
