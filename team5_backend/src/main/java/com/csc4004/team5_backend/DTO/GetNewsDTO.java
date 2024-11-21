@@ -15,7 +15,7 @@ public class GetNewsDTO {
     @NotBlank
     private String newsTitle;
     @NotBlank
-    private LocalDateTime newsDate;
+    private String newsDate;
     @NotBlank
     private String newsShort;
     @NotBlank

@@ -8,7 +8,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Locale;
 
 @Service
 @Slf4j
@@ -17,13 +19,17 @@ public class NewsService {
     private final NewsRepository newsRepository;
 
     public int save(GetNewsDTO getNewsDTO) {
+        String dateTimeString = getNewsDTO.getNewsDate();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd. a h:mm", Locale.KOREAN);
+        LocalDateTime convertedDateTime = LocalDateTime.parse(dateTimeString, formatter);
+
         News news = News.builder()
                 .newsTitle(getNewsDTO.getNewsTitle())
                 .newsShort(getNewsDTO.getNewsShort())
                 .quizQuestion(getNewsDTO.getQuizQuestion())
                 .quizAnswer(getNewsDTO.getQuizAnswer())
                 .quizOption(getNewsDTO.getQuizOption().toString())
-                .newsDate(getNewsDTO.getNewsDate())
+                .newsDate(convertedDateTime)
                 .build();
 
         News newsTuple = newsRepository.save(news);
