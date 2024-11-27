@@ -7,20 +7,18 @@ const RankingScreen = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // 랭킹 데이터 가져오기
   const fetchRankingData = async () => {
     try {
-      const response = await axios.get('https://211.188.49.69:8081/main', {
+      const response = await axios.get('http://211.188.49.69:8081/main', {
         headers: {
           'Content-Type': 'application/json',
         },
       });
-
+  
       if (response.status === 200 && response.data.code === 'SU') {
         const ranking = response.data.ranking;
-
+  
         if (ranking.length > 0) {
-          // 랭킹 데이터를 상태에 설정
           setRankingData(ranking.slice(0, 5)); // 상위 5명만 표시
         } else {
           setRankingData([]);
@@ -30,6 +28,7 @@ const RankingScreen = () => {
         throw new Error(response.data.message || '데이터를 불러올 수 없습니다.');
       }
     } catch (err) {
+      console.error('에러 상세:', err); // 에러 상세 정보를 출력
       if (err.response && err.response.status === 503) {
         setError(err.response.data.message || '서버가 요청을 처리할 수 없습니다.');
       } else {
@@ -98,6 +97,7 @@ const RankingScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    width: '100%',
     backgroundColor: '#ffffff',
     padding: 16,
   },

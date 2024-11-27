@@ -1,7 +1,7 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
-import { AppContext } from '../../../AppContext';
 import axios from 'axios';
+import { AppContext } from '../../../AppContext';
 
 const Quiz = ({ quizData, onGoToNewsDetail, onGoToNewsList }) => {
   const [message, setMessage] = useState('');
@@ -11,15 +11,14 @@ const Quiz = ({ quizData, onGoToNewsDetail, onGoToNewsList }) => {
 
   const { markQuestionAsAnswered } = useContext(AppContext);
 
-
-
   const handleOptionPress = async (selectedOption) => {
     if (isAnswered) return; // 이미 정답을 선택한 경우 아무 동작하지 않음
-
-    if (selectedOption === quizData.quizAnswer) {
+    const selectedIndex = quizData.quizOptions.indexOf(selectedOption) + 1;
+    
+    if (selectedIndex === quizData.quizAnswer) {
       setMessage('정답입니다!');
       setIsCorrect(true);
-      markQuestionAsAnswered(quizData.id);
+      markQuestionAsAnswered(quizData.newsID);
       await updateExp(); // 경험치 업데이트 함수 호출
     } else {
       setMessage('오답입니다!');
@@ -31,17 +30,15 @@ const Quiz = ({ quizData, onGoToNewsDetail, onGoToNewsList }) => {
   // 경험치 업데이트 함수
   const updateExp = async () => {
     try {
-      const response = await axios.post('https://211.188.49.69:8081/exp', {
-        userID: 12345, // 실제 로그인된 유저의 ID를 전달해야 함
-        quizID: quizData.id, // 퀴즈 ID 전달
-        correct: true, // 정답 여부
-      });
-
+      console.log('POST 요청 시작');
+      const response = await axios.post('http://211.188.49.69:8081/exp');
+      console.log('응답 수신:', response);
+  
       if (response.status === 200 && response.data.code === 'SU') {
+        console.log('응답 데이터:', response.data);
         const info = response.data.info;
         setUserInfo(info);
-
-        // 경험치 및 레벨업 정보 표시
+  
         if (info.levelUp) {
           Alert.alert(
             '레벨업!',
@@ -52,18 +49,18 @@ const Quiz = ({ quizData, onGoToNewsDetail, onGoToNewsList }) => {
         }
       }
     } catch (error) {
+      console.error('요청 실패:', error);
+  
       if (error.response) {
-        // 서버 에러 메시지 처리
         const errorMessage =
           error.response.data.message || '경험치 업데이트 중 문제가 발생했습니다.';
         Alert.alert('오류', errorMessage);
       } else {
-        // 네트워크 또는 기타 에러 처리
         Alert.alert('오류', '서버와 통신 중 문제가 발생했습니다.');
       }
     }
   };
-
+  
   return (
     <View style={styles.container}>
       <View style={styles.header}>

@@ -1,12 +1,67 @@
-import React from 'react';
-import { View, Text, Image, StyleSheet, ScrollView } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, Image, StyleSheet, ScrollView, ActivityIndicator, Alert } from 'react-native';
+import axios from 'axios';
 
-// 사용자의 스탯 정보를 받아와 표시하는 화면
 const StatScreen = ({
-  characterData = {},
-  getLevelUpThreshold = (level) => 0,
-  getRank = (level) => ({ rank: 'Unknown', image: null }),
+  getLevelUpThreshold = (level) => 100 * level, // 레벨 업 경험치 계산 로직 기본값
+  getRank = (level) => ({ rank: 'Unknown', image: null }), // 랭크와 이미지 계산 기본값
 }) => {
+  const [characterData, setCharacterData] = useState(null); // 사용자 데이터
+  const [loading, setLoading] = useState(true); // 로딩 상태
+  const [error, setError] = useState(null); // 에러 상태
+
+  // 사용자 데이터 호출 함수
+  const fetchUserData = async () => {
+    setLoading(true);
+    try {
+      const response = await axios.get('http://211.188.49.69:8081/stat', {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.status === 200 && response.data.code === 'SU') {
+        setCharacterData(response.data.loginUser);
+      } else {
+        throw new Error(response.data.message || '사용자 데이터를 가져오지 못했습니다.');
+      }
+    } catch (err) {
+      console.error('에러 상세:', err);
+      setError('서버와 통신 중 문제가 발생했습니다.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchUserData(); // 컴포넌트가 마운트될 때 사용자 데이터 가져오기
+  }, []);
+
+  if (loading) {
+    return (
+      <View style={styles.loaderContainer}>
+        <ActivityIndicator size="large" color="#007bff" />
+        <Text style={styles.loaderText}>데이터를 불러오는 중...</Text>
+      </View>
+    );
+  }
+
+  if (error) {
+    return (
+      <View style={styles.errorContainer}>
+        <Text style={styles.errorText}>{error}</Text>
+      </View>
+    );
+  }
+
+  if (!characterData) {
+    return (
+      <View style={styles.errorContainer}>
+        <Text style={styles.errorText}>사용자 데이터를 찾을 수 없습니다.</Text>
+      </View>
+    );
+  }
+
   const {
     level = 0,
     exp = 0,
@@ -15,8 +70,8 @@ const StatScreen = ({
     profileImage = null,
   } = characterData;
 
-  const { rank, image } = getRank(level); // 레벨에 따른 랭크와 이미지 계산
-  const levelUpThreshold = getLevelUpThreshold(level); // 레벨 업 경험치 계산
+  const { rank, image } = getRank(level);
+  const levelUpThreshold = getLevelUpThreshold(level);
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -68,6 +123,7 @@ const styles = StyleSheet.create({
   },
   profileImageContainer: {
     alignItems: 'center',
+    padding: 16,
     marginBottom: 16,
   },
   profileImage: {
@@ -84,6 +140,7 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   statRow: {
+    width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -108,6 +165,25 @@ const styles = StyleSheet.create({
     width: 20,
     height: 20,
     marginLeft: 10,
+  },
+  loaderContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  loaderText: {
+    marginTop: 10,
+    fontSize: 16,
+    color: '#555',
+  },
+  errorContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  errorText: {
+    color: 'red',
+    fontSize: 16,
   },
 });
 

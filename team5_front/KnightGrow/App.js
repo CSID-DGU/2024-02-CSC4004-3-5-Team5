@@ -12,7 +12,6 @@ const App = () => {
   return (
     <AppProvider>
       <NavigationContainer>
-        {/* 로그인 구현 후 initialRouteName="Login" 으로 바꾸기 */}
         <Stack.Navigator initialRouteName="Main">
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen name="Main" component={Main} options={{ headerShown: false }} />

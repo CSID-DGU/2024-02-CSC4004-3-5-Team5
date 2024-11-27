@@ -4,7 +4,7 @@ import * as AuthSession from 'expo-auth-session';
 
 // Kakao API 설정
 const KAKAO_REST_API_KEY = '3f25aa1915bca4417d2a36dd3f8d68b4';
-const BACKEND_URL = 'https://211.188.49.69:8081/login'; // 백엔드 URL
+const BACKEND_URL = 'http://211.188.49.69:8081/login'; // 백엔드 URL
 
 
 const redirectUri = 'https://localhost:8081/callback';
@@ -26,7 +26,7 @@ const LoginScreen = ({ navigation }) => {
   useEffect(() => {
     if (response?.type === 'success') {
       const authorizationCode = response.params.code;
-
+      console.log(response);
       // 인가 코드를 백엔드로 전송
       const sendAuthorizationCode = async () => {
         try {

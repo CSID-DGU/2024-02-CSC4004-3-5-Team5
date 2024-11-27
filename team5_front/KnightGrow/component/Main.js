@@ -34,7 +34,7 @@ const Main = ({ route }) => {
   const renderMiddleContent = () => {
     switch (middleContent) {
       case '던전':
-        return <DungeonScreen />;
+        return <DungeonScreen userID={userData.userID} />;
       case '랭킹':
         return <RankingScreen />;
       case '스텟':
@@ -45,28 +45,28 @@ const Main = ({ route }) => {
   };
 
   return (
-      <View style={styles.container}>
-        <TopSection style={styles.top} resizeMode="cover" />
-        <View style={styles.header}>
-          <Text style={styles.headerText}>{middleContent}</Text>
-        </View>
-        <View style={styles.middle}>{renderMiddleContent()}</View>
-        <Button style={styles.bottom} updateContent={updateMiddleContent} />
-
-        {/* 챗봇 팝업 구현 */}
-        <Modal
-          animationType="fade"
-          transparent={true}
-          visible={isChatBotVisible}
-          onRequestClose={closeChatBot}
-        >
-          <View style={styles.modalBackground}>
-            <View style={styles.chatBotContainer}>
-              <ChatBotScreen onClose={closeChatBot} />
-            </View>
-          </View>
-        </Modal>
+    <View style={styles.container}>
+      <TopSection style={styles.top} resizeMode="cover" />
+      <View style={styles.header}>
+        <Text style={styles.headerText}>{middleContent}</Text>
       </View>
+      <View style={styles.middle}>{renderMiddleContent()}</View>
+      <Button style={styles.bottom} updateContent={updateMiddleContent} />
+
+      {/* 챗봇 팝업 구현 */}
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={isChatBotVisible}
+        onRequestClose={closeChatBot}
+      >
+        <View style={styles.modalBackground}>
+          <View style={styles.chatBotContainer}>
+            <ChatBotScreen onClose={closeChatBot} />
+          </View>
+        </View>
+      </Modal>
+    </View>
   );
 };
 
