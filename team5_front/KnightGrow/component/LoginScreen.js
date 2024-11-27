@@ -1,96 +1,85 @@
-// TODO: kakao login api 이용하는 로그인 구현
-// kakao 인가 코드 받고, 백엔드로 전해주는 것까지
+import React, { useEffect } from 'react';
+import { View, TouchableOpacity, Text, StyleSheet, Image } from 'react-native';
+import * as AuthSession from 'expo-auth-session';
 
-import React, { useState } from 'react';
-import { View, TextInput, TouchableOpacity, Text, StyleSheet } from 'react-native';
+// Kakao API 설정
+const KAKAO_REST_API_KEY = '3f25aa1915bca4417d2a36dd3f8d68b4';
+const BACKEND_URL = 'https://211.188.49.69:8081/login'; // 백엔드 URL
 
+// 리다이렉트 URI 생성
+const redirectUri = 'https://localhost:8081/callback';
+console.log('Redirect URI:', redirectUri);
 const LoginScreen = ({ navigation }) => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
-
-  const handleLogin = async () => {
-    if (!username || !password) {
-      setError('아이디와 비밀번호를 입력해주세요');
-      return;
-    }
-
-    setLoading(true);
-    setError('');
-
-    try {
-      const response = await fetch('https://your-backend-url.com/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ username, password }),
-      });
-
-      const data = await response.json();
-
-      if (data.success) {
-        // 로그인 성공 시 Main 화면으로 이동
-        navigation.navigate('Main');
-      } else {
-        setError('아이디 또는 비밀번호가 틀렸습니다');
-      }
-    } catch (error) {
-      setError('로그인 중 오류가 발생했습니다');
-    } finally {
-      setLoading(false);
-    }
+  const discovery = {
+    authorizationEndpoint: 'https://kauth.kakao.com/oauth/authorize',
   };
+
+  const [request, response, promptAsync] = AuthSession.useAuthRequest(
+    {
+      clientId: KAKAO_REST_API_KEY,
+      redirectUri,
+      responseType: 'code',
+    },
+    discovery
+  );
+
+  useEffect(() => {
+    if (response?.type === 'success') {
+      const authorizationCode = response.params.code;
+
+      // 인가 코드를 백엔드로 전송
+      const sendAuthorizationCode = async () => {
+        try {
+          const res = await fetch(BACKEND_URL, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ code: authorizationCode }),
+          });
+
+          const data = await res.json();
+
+          if (res.status === 200 && data.code === 'SU') {
+            const user = data.loginUser;
+
+            // 사용자 정보를 처리하거나 Main 화면으로 이동
+            navigation.navigate('Main', { user });
+          } else {
+            console.error('로그인 실패:', data.message);
+          }
+        } catch (err) {
+          console.error('로그인 오류:', err);
+        }
+      };
+
+      sendAuthorizationCode();
+    }
+  }, [response]);
 
   return (
     <View style={styles.container}>
-      <TextInput
-        style={styles.input}
-        placeholder="아이디"
-        value={username}
-        onChangeText={setUsername}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="비밀번호"
-        secureTextEntry
-        value={password}
-        onChangeText={setPassword}
-      />
-      {error ? <Text style={styles.errorText}>{error}</Text> : null}
-      <TouchableOpacity onPress={handleLogin} style={styles.button} disabled={loading}>
-        <Text style={styles.buttonText}>{loading ? '로그인 중...' : '로그인'}</Text>
-      </TouchableOpacity>
       <TouchableOpacity
-        onPress={() => navigation.navigate('Register')}
-        style={styles.link}
+        onPress={() => promptAsync({ useProxy: true })}
+        style={styles.kakaoButton}
+        disabled={!request}
       >
-        <Text>회원가입</Text>
+        <Image
+          source={{
+            uri: 'https://developers.kakao.com/tool/resource/static/img/button/login/full/ko/kakao_login_medium_wide.png',
+          }}
+          style={styles.kakaoButtonImage}
+        />
       </TouchableOpacity>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: 'center', padding: 20 },
-  input: {
-    height: 40,
-    borderColor: '#ccc',
-    borderWidth: 1,
-    marginBottom: 10,
-    paddingLeft: 10,
-    borderRadius: 5,
-  },
-  button: {
-    backgroundColor: '#007bff',
-    paddingVertical: 10,
-    alignItems: 'center',
-    borderRadius: 5,
-  },
-  buttonText: { color: '#fff', fontSize: 16 },
-  errorText: { color: 'red', textAlign: 'center', marginBottom: 10 },
-  link: { marginTop: 10, alignItems: 'center' },
+  container: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#fff' },
+  kakaoButton: { width: 300, height: 45, marginBottom: 20 },
+  kakaoButtonImage: { width: '100%', height: '100%', resizeMode: 'contain' },
+  errorText: { color: 'red', marginBottom: 20, fontSize: 16, textAlign: 'center' },
 });
 
 export default LoginScreen;

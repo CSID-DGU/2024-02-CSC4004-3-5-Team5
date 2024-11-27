@@ -1,22 +1,20 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
-
-// TODO: Quiz.js에서 정답을 맞춘 뉴스는 비활성화 해야됨
-
-const NewsList = ({ newsData, onSelect, answeredQuestion }) => {
+import { AppContext } from '../../../Appcontext';
+const NewsList = ({ newsData, onSelect }) => {
+  const { answeredQuestions } = useContext(AppContext);
   return (
     <ScrollView>
       <View style={styles.container}>
-        
         {newsData.map((news) => (
           <TouchableOpacity
             key={news.id}
             style={[
               styles.newsButton,
-              news.id === answeredQuestion && styles.answeredButton,
+              answeredQuestions.includes(news.id) && styles.answeredButton,
             ]}
-            onPress={() => news.id !== answeredQuestion && onSelect(news)}
-            disabled={news.id === answeredQuestion}
+            onPress={() => !answeredQuestions.includes(news.id) && onSelect(news)}
+            disabled={answeredQuestions.includes(news.id)} // 비활성화
           >
             <Text style={styles.newsTitle}>{news.newsTitle}</Text>
           </TouchableOpacity>
