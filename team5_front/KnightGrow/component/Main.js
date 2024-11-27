@@ -1,18 +1,18 @@
-import React, { useState } from 'react';
-import { View, StyleSheet, Modal, TouchableOpacity, Text } from 'react-native';
+import React, { useState, useContext } from 'react';
+import { View, StyleSheet, Modal, Text } from 'react-native';
 import TopSection from './TopSection/TopSection';
 import DungeonScreen from './MidSection/Dungeon/DungeonScreen';
 import RankingScreen from './MidSection/Ranking/RankingScreen';
 import StatScreen from './MidSection/Stat/StatScreen';
 import ChatBotScreen from './MidSection/chatbot/ChatBotScreen';
 import Button from './Footer/Button';
-import { AppContext, AppProvider } from '../Appcontext';
+import { AppContext } from '../AppContext';
 
 
-const Main = ({ route, navigation }) => {
+const Main = ({ route }) => {
   const [middleContent, setMiddleContent] = useState('랭킹'); // 중간화면 상태 관리 (기본 상태 ; 랭킹)
   const [isChatBotVisible, setIsChatBotVisible] = useState(false);
-
+  const { answeredQuestions } = useContext(AppContext);
   // 로그인 시 전달받은 사용자 데이터
   const userData = route.params?.user || {};
 
@@ -45,7 +45,6 @@ const Main = ({ route, navigation }) => {
   };
 
   return (
-    <AppContext.Provider value={{ answeredQuestions, markQuestionAsAnswered }}>
       <View style={styles.container}>
         <TopSection style={styles.top} resizeMode="cover" />
         <View style={styles.header}>
@@ -68,7 +67,6 @@ const Main = ({ route, navigation }) => {
           </View>
         </Modal>
       </View>
-    </AppContext.Provider>
   );
 };
 

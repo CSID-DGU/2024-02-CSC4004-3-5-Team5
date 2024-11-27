@@ -1,30 +1,43 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, ScrollView } from 'react-native';
 
+// 사용자의 스탯 정보를 받아와 표시하는 화면
+const StatScreen = ({
+  characterData = {},
+  getLevelUpThreshold = (level) => 0,
+  getRank = (level) => ({ rank: 'Unknown', image: null }),
+}) => {
+  const {
+    level = 0,
+    exp = 0,
+    winCount = 0,
+    userName = 'Unknown',
+    profileImage = null,
+  } = characterData;
 
-// 사용자의 스텟 정보를 백엔드에서 받아와야됨
-
-// TODO: HP 없애고 winCount 추가
-
-const StatScreen = ({ characterData = { stats: {} }, getLevelUpThreshold = () => 0, getRank = () => ({ rank: 'Unknown', image: null }) }) => {
-  const { Level = 0, intelligence = 0, totalIntelligence = 0, HP = 0 } = characterData.stats;
-
-  const { rank, image } = getRank(Level);
-  const levelUpThreshold = getLevelUpThreshold(Level);
+  const { rank, image } = getRank(level); // 레벨에 따른 랭크와 이미지 계산
+  const levelUpThreshold = getLevelUpThreshold(level); // 레벨 업 경험치 계산
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
+      {/* 프로필 이미지 */}
       <View style={styles.profileImageContainer}>
-        <Image source={characterData.profileImage} style={styles.profileImage} />
+        {profileImage ? (
+          <Image source={{ uri: profileImage }} style={styles.profileImage} />
+        ) : (
+          <View style={[styles.profileImage, styles.placeholder]} />
+        )}
       </View>
+
+      {/* 스탯 정보 */}
       <View style={styles.infoContainer}>
         <View style={styles.statRow}>
           <Text style={styles.statName}>Name</Text>
-          <Text style={styles.statValue}>{characterData.name || 'Unknown'}</Text>
+          <Text style={styles.statValue}>{userName}</Text>
         </View>
         <View style={styles.statRow}>
           <Text style={styles.statName}>Level</Text>
-          <Text style={styles.statValue}>{Level}</Text>
+          <Text style={styles.statValue}>{level}</Text>
         </View>
         <View style={styles.statRow}>
           <Text style={styles.statName}>Rank</Text>
@@ -36,16 +49,12 @@ const StatScreen = ({ characterData = { stats: {} }, getLevelUpThreshold = () =>
         <View style={styles.statRow}>
           <Text style={styles.statName}>Experience</Text>
           <Text style={styles.statValue}>
-            {intelligence} / {levelUpThreshold}
+            {exp} / {levelUpThreshold}
           </Text>
         </View>
         <View style={styles.statRow}>
-          <Text style={styles.statName}>Total Experience</Text>
-          <Text style={styles.statValue}>{totalIntelligence}</Text>
-        </View>
-        <View style={styles.statRow}>
-          <Text style={styles.statName}>HP</Text>
-          <Text style={styles.statValue}>{HP}</Text>
+          <Text style={styles.statName}>Win Count</Text>
+          <Text style={styles.statValue}>{winCount}</Text>
         </View>
       </View>
     </ScrollView>
@@ -56,17 +65,20 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#ffffff',
-    
   },
   profileImageContainer: {
     alignItems: 'center',
-    marginBottom: 0,
-    marginHorizontal: 50
+    marginBottom: 16,
   },
   profileImage: {
     width: 150,
     height: 150,
     borderRadius: 75,
+  },
+  placeholder: {
+    backgroundColor: '#ddd',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   infoContainer: {
     padding: 16,

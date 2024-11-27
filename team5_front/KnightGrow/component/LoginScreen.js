@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react';
-import { View, TouchableOpacity, Text, StyleSheet, Image } from 'react-native';
+import { View, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import * as AuthSession from 'expo-auth-session';
 
 // Kakao API 설정
 const KAKAO_REST_API_KEY = '3f25aa1915bca4417d2a36dd3f8d68b4';
 const BACKEND_URL = 'https://211.188.49.69:8081/login'; // 백엔드 URL
 
-// 리다이렉트 URI 생성
+
 const redirectUri = 'https://localhost:8081/callback';
 console.log('Redirect URI:', redirectUri);
 const LoginScreen = ({ navigation }) => {

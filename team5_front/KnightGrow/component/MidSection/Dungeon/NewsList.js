@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
-import { AppContext } from '../../../Appcontext';
+import { AppContext } from '../../../AppContext';
 const NewsList = ({ newsData, onSelect }) => {
   const { answeredQuestions } = useContext(AppContext);
   return (

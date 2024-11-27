@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
-import { AppContext } from '../../../Appcontext';
+import { AppContext } from '../../../AppContext';
 import axios from 'axios';
 
 const Quiz = ({ quizData, onGoToNewsDetail, onGoToNewsList }) => {
