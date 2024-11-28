@@ -4,7 +4,7 @@
     "slug": "KnightGrow",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/Loading.png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "splash": {
@@ -13,12 +13,16 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.team5.knightGrow",
+      "buildNumber": "1.0.0"
     },
     "android": {
+      "usesCleartextTraffic": true,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#ffffff",
+        "versionCode": 1
       },
       "package": "com.team5.knightGrow"
     },
@@ -27,7 +31,9 @@
     },
     "extra": {
       "eas": {
-        "projectId": "1a360e72-e750-434a-add2-ea3d143aaf6c"
+        "projectId": "1a360e72-e750-434a-add2-ea3d143aaf6c",
+        "apiUrlNews": "http://211.188.49.69:8081",
+        "apiUrlChatbot": "http://220.116.240.223:5001"
       }
     },
     "owner": "qlsk"

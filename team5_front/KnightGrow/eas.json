@@ -1,18 +1,28 @@
 {
-  "cli": {
-    "version": ">= 13.1.1",
-    "appVersionSource": "remote"
-  },
   "build": {
     "preview": {
       "android": {
         "buildType": "apk"
       }
     },
+    "preview2": {
+      "android": {
+        "gradleCommand": ":app:assembleRelease"
+      }
+    },
+    "preview3": {
+      "developmentClient": true
+    },
+    "preview4": {
+      "distribution": "internal"
+    },
     "production": {
       "android": {
-        "buildType": "app-bundle",
-        "gradleCommand": ":app:assembleRelease"
+        "buildType": "apk",
+        "env": {
+          "API_URL_NEWS": "http://211.188.49.69:8081",
+          "API_URL_CHATBOT": "http://220.116.240.223:5001"
+        }
       }
     }
   },

@@ -1,7 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import axios from 'axios';
 import { AppContext } from '../../../AppContext';
+import { API_CONFIG } from '../../../ApiConfig';
+
+// post 현재 문제 번호 selectedQuestion NewsID 전송
+// 
 
 const Quiz = ({ quizData, onGoToNewsDetail, onGoToNewsList }) => {
   const [message, setMessage] = useState('');
@@ -16,22 +20,22 @@ const Quiz = ({ quizData, onGoToNewsDetail, onGoToNewsList }) => {
     const selectedIndex = quizData.quizOptions.indexOf(selectedOption) + 1;
     
     if (selectedIndex === quizData.quizAnswer) {
-      setMessage('정답입니다!');
+      setMessage('정답입니다! 경험치 100 획득');
       setIsCorrect(true);
+      setIsAnswered(true);
       markQuestionAsAnswered(quizData.newsID);
       await updateExp(); // 경험치 업데이트 함수 호출
     } else {
       setMessage('오답입니다!');
     }
 
-    setIsAnswered(true);
   };
 
   // 경험치 업데이트 함수
   const updateExp = async () => {
     try {
       console.log('POST 요청 시작');
-      const response = await axios.post('http://211.188.49.69:8081/exp');
+      const response = await axios.post(`${API_CONFIG.news}/exp`);
       console.log('응답 수신:', response);
   
       if (response.status === 200 && response.data.code === 'SU') {
@@ -44,8 +48,6 @@ const Quiz = ({ quizData, onGoToNewsDetail, onGoToNewsList }) => {
             '레벨업!',
             `축하합니다! 레벨 ${info.previousLevel} → ${info.currentLevel}로 레벨업했습니다.`
           );
-        } else {
-          Alert.alert('경험치 획득', `경험치 ${info.gainedExp}을 획득했습니다.`);
         }
       }
     } catch (error) {

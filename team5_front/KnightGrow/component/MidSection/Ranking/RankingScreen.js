@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, StyleSheet, Image, ActivityIndicator } from 'react-native';
 import axios from 'axios';
+import { API_CONFIG } from '../../../ApiConfig';
 
 const RankingScreen = () => {
   const [rankingData, setRankingData] = useState([]);
@@ -9,7 +10,7 @@ const RankingScreen = () => {
 
   const fetchRankingData = async () => {
     try {
-      const response = await axios.get('http://211.188.49.69:8081/main', {
+      const response = await axios.get(`${API_CONFIG.news}/main`, {
         headers: {
           'Content-Type': 'application/json',
         },

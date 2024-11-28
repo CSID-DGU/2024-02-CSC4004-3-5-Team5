@@ -4,6 +4,9 @@ import axios from 'axios';
 import NewsList from './NewsList';
 import NewsDetail from './NewsDetail';
 import Quiz from './Quiz';
+import { API_CONFIG } from '../../../ApiConfig';
+
+
 
 const DungeonScreen = () => {
   const [currentScreen, setCurrentScreen] = useState('newsList');
@@ -17,12 +20,10 @@ const DungeonScreen = () => {
       setLoading(true);
       setError(null);
       try {
-        const response = await axios.get('http://211.188.49.69:8081/news');
-
-        // 올바른 newsList 디스트럭처링
+        const response = await axios.get(`${API_CONFIG.news}/news`);
+        console.log(response);
         const { newsList } = response.data;
 
-        // 데이터를 변환
         const formattedNewsData = newsList.map((news) => ({
           id: news.newsID,
           newsDate: news.newsDate,

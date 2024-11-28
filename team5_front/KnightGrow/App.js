@@ -5,7 +5,6 @@ import LoginScreen from './component/LoginScreen';
 import Main from './component/Main';
 import { AppProvider } from './AppContext';
 
-// TODO: LoginScreen.js 구현 후 Stak.Navigator로 로그인 화면 구현
 const Stack = createStackNavigator();
 
 const App = () => {

@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Image } from 'react-native';
 import axios from 'axios';
+import { API_CONFIG } from '../../../ApiConfig';
 
 const sendMessageToBackend = async (message) => {
   try {
-    const response = await axios.post('http://220.116.240.223:5001/receive_json', {
+    const response = await axios.post(`${API_CONFIG.chatbot}/receive_json`, {
       question: message,
     });
 

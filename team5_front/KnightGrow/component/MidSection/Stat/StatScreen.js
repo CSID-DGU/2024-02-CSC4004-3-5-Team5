@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, Image, StyleSheet, ScrollView, ActivityIndicator, Alert } from 'react-native';
 import axios from 'axios';
+import { API_CONFIG } from '../../../ApiConfig';
 
 const StatScreen = ({
   getLevelUpThreshold = (level) => 100 * level, // 레벨 업 경험치 계산 로직 기본값
@@ -14,7 +15,7 @@ const StatScreen = ({
   const fetchUserData = async () => {
     setLoading(true);
     try {
-      const response = await axios.get('http://211.188.49.69:8081/stat', {
+      const response = await axios.get(`${API_CONFIG.news}/stat`, {
         headers: {
           'Content-Type': 'application/json',
         },
