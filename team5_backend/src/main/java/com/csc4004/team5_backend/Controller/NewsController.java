@@ -3,6 +3,7 @@ package com.csc4004.team5_backend.Controller;
 import com.csc4004.team5_backend.DTO.GetNewsDTO;
 import com.csc4004.team5_backend.Entity.News;
 import com.csc4004.team5_backend.Entity.User;
+import com.csc4004.team5_backend.Repository.UserRepository;
 import com.csc4004.team5_backend.Service.LevelService;
 import com.csc4004.team5_backend.Service.NewsService;
 import jakarta.servlet.http.HttpSession;
@@ -20,6 +21,7 @@ import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor

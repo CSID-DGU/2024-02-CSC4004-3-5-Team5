@@ -1,6 +1,7 @@
 package com.csc4004.team5_backend.Controller;
 
 import com.csc4004.team5_backend.Entity.User;
+import com.csc4004.team5_backend.Repository.UserRepository;
 import com.csc4004.team5_backend.Service.LoginService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @Slf4j

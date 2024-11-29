@@ -30,7 +30,7 @@ public class LevelService {
 
         // updateExp : previousExp + consecutiveDay * newsExp(by difficulty) ?
         int previousExp = currentUser.getExp();
-        int currentExp = previousExp + (int)(1 +currentUser.getConsecutiveDay() * 0.1) * 100; // test
+        int currentExp = previousExp + (int)(1 + currentUser.getConsecutiveDay() * 0.1) * 100; // test
         currentUser.setExp(currentExp);
         result.put("gainedExp", currentExp - previousExp);
 

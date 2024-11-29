@@ -27,7 +27,7 @@ public class News {
     private String newsShort;
 
     @Lob
-    @Column(name = "newsFull")
+    @Column(name = "newsFull", columnDefinition = "TEXT")
     private String newsFull;
 
     @Column(name = "quizQuestion")

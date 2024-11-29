@@ -30,6 +30,7 @@ public class NewsService {
                 .quizAnswer(getNewsDTO.getQuizAnswer())
                 .quizOption(getNewsDTO.getQuizOption().toString())
                 .newsDate(convertedDateTime)
+                .newsFull(getNewsDTO.getNewsFull())
                 .build();
 
         News newsTuple = newsRepository.save(news);
@@ -37,7 +38,7 @@ public class NewsService {
     }
 
     public List<News> getNowNews(LocalDateTime now) {
-        LocalDateTime hourAgo = now.minusHours(1);
+        LocalDateTime hourAgo = now.minusHours(3);
         log.info("hourAgo -- " + hourAgo);
         log.info("timeNow -- " + now);
         return newsRepository.findByNewsDateBetween(hourAgo, now);
