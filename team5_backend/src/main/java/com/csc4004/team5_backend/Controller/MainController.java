@@ -22,6 +22,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class MainController {
     private final LoginService loginService;
+    private final UserRepository userRepository;
 
     @GetMapping("/main")
     public ResponseEntity<?> getRank() {
@@ -64,10 +65,13 @@ public class MainController {
             if (user == null) {
                 throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not logged in");
             }
-            response.put("code", "SU");
-            response.put("message", "Success.");
-            response.put("loginUser", user);
-            return ResponseEntity.status(HttpStatus.OK).body(response);
+            else {
+                User userStat = userRepository.findById(user.getUserID()).get();
+                response.put("code", "SU");
+                response.put("message", "Success.");
+                response.put("loginUser", userStat);
+                return ResponseEntity.status(HttpStatus.OK).body(response);
+            }
         } catch (Exception e) {
             response.put("code", "Error");
             response.put("message", e.getMessage());

@@ -38,7 +38,7 @@ public class NewsService {
     }
 
     public List<News> getNowNews(LocalDateTime now) {
-        LocalDateTime hourAgo = now.minusHours(3);
+        LocalDateTime hourAgo = now.minusDays(1);
         log.info("hourAgo -- " + hourAgo);
         log.info("timeNow -- " + now);
         return newsRepository.findByNewsDateBetween(hourAgo, now);
