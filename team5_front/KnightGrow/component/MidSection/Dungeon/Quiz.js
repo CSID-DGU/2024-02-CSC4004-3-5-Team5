@@ -34,12 +34,12 @@ const Quiz = ({ quizData, onGoToNewsDetail, onGoToNewsList }) => {
   // 경험치 업데이트 함수
   const updateExp = async () => {
     try {
-      console.log('POST 요청 시작');
+      console.log('경험치 업데이트');
       const response = await axios.post(`${API_CONFIG.news}/exp`);
-      console.log('응답 수신:', response);
+      // console.log('응답 수신:', response);
   
       if (response.status === 200 && response.data.code === 'SU') {
-        console.log('응답 데이터:', response.data);
+        // console.log('응답 데이터:', response.data);
         const info = response.data.info;
         setUserInfo(info);
   

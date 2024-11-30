@@ -21,7 +21,7 @@ const DungeonScreen = () => {
       setError(null);
       try {
         const response = await axios.get(`${API_CONFIG.news}/news`);
-        console.log(response);
+        // console.log(response);
         const { newsList } = response.data;
 
         const formattedNewsData = newsList.map((news) => ({
