@@ -17,7 +17,7 @@ const Quiz = ({ quizData, onGoToNewsDetail, onGoToNewsList }) => {
 
   const handleOptionPress = async (selectedOption) => {
     if (isAnswered) return; // 이미 정답을 선택한 경우 아무 동작하지 않음
-    const selectedIndex = quizData.quizOptions.indexOf(selectedOption) + 1;
+    const selectedIndex = quizData.quizOptions.indexOf(selectedOption);
     
     if (selectedIndex === quizData.quizAnswer) {
       setMessage('정답입니다! 경험치 100 획득');
