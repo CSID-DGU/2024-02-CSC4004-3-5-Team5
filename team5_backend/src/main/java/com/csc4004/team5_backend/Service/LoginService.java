@@ -113,6 +113,10 @@ public class LoginService {
             newUser.setUserName(kakaoUserDTO.getNickname());
             newUser.setProfileImage(kakaoUserDTO.getProfile_image());
             newUser.setLastAttendence(today);
+            newUser.setLevel(1);
+            newUser.setExp(0);
+            newUser.setWinCount(0);
+            newUser.setConsecutiveDay(1);
             userRepository.save(newUser);
             return newUser;
         }
@@ -123,7 +127,9 @@ public class LoginService {
                 userRepository.updateConsecutiveDay(id);
             }
             else {
-                userRepository.resetConsecutiveDay(id);
+                if (!previousDate.equals(today)) {
+                    userRepository.resetConsecutiveDay(id);
+                }
             }
             userRepository.updateLastAttendence(id, today);
             return userInfo.get();
