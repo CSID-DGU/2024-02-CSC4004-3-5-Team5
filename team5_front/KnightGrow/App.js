@@ -14,8 +14,8 @@ const App = () => {
     <AppProvider>
       <NavigationContainer>
         <Stack.Navigator initialRouteName="Login">
-          <Stack.Screen name="Login" component={LoginScreen} />
-          <Stack.Screen name="KaKaoLogin" component={KaKaoLogin} />
+          <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="KaKaoLogin" component={KaKaoLogin} options={{ headerShown: false }} />
           <Stack.Screen name="Main" component={Main} options={{ headerShown: false }} />
         </Stack.Navigator>
       </NavigationContainer>

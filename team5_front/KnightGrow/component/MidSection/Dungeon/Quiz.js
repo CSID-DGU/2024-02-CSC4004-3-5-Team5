@@ -23,7 +23,7 @@ const Quiz = ({ quizData, onGoToNewsDetail, onGoToNewsList }) => {
       setMessage('정답입니다! 경험치 100 획득');
       setIsCorrect(true);
       setIsAnswered(true);
-      markQuestionAsAnswered(quizData.newsID);
+      markQuestionAsAnswered(quizData.id);
       await updateExp(); // 경험치 업데이트 함수 호출
     } else {
       setMessage('오답입니다!');

@@ -1,18 +1,24 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 const LoginScreen = () => {
   const navigation = useNavigation();
 
   return (
-    <View style={Styles.container}>      
-      <Text style={Styles.HomeText}>로그인 화면</Text>
+    <View style={Styles.container}>
+      <Image 
+        source={require('../assets/Loading.png')} 
+        style={Styles.backgroundImage}
+      />
       <TouchableOpacity
         onPress={() => navigation.navigate("KaKaoLogin")}
-        style={Styles.NextBottom}
+        style={Styles.kakaoButton}
       >
-        <Text style={Styles.BottomText}>카카오 화면으로</Text>
+        <Image 
+          source={require('../assets/kakaoLogin.png')} 
+          style={Styles.kakaoImage}
+        />
       </TouchableOpacity>
     </View>
   );
@@ -23,20 +29,21 @@ export default LoginScreen;
 const Styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
-  HomeText: {
-    fontSize: 24,
-    marginBottom: 20,
+  backgroundImage: {
+    width: '100%',
+    height: '100%',
+    position: 'absolute',
+    resizeMode: 'cover',
   },
-  NextBottom: {
-    backgroundColor: '#fdd835',
-    padding: 15,
-    borderRadius: 5,
+  kakaoButton: {
+    alignSelf: 'center',
+    position: 'absolute',
+    bottom: 50,
   },
-  BottomText: {
-    fontSize: 18,
-    color: '#000',
+  kakaoImage: {
+    width: 200,
+    height: 50,
+    resizeMode: 'contain',
   },
 });
