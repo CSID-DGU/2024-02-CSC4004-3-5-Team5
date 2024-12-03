@@ -1,40 +1,57 @@
-import React, { useState, useContext } from 'react';
-import { View, StyleSheet, Modal, Text } from 'react-native';
+import React, { useContext, useState, useEffect } from 'react';
+import { View, StyleSheet, Modal, Text, BackHandler, Alert } from 'react-native';
+import { BattleContext } from '../BattleContext';
 import TopSection from './TopSection/TopSection';
-import DungeonScreen from './MidSection/Dungeon/DungeonScreen';
 import RankingScreen from './MidSection/Ranking/RankingScreen';
 import StatScreen from './MidSection/Stat/StatScreen';
 import ChatBotScreen from './MidSection/chatbot/ChatBotScreen';
 import Button from './Footer/Button';
-import { AppContext } from '../AppContext';
-
+import DungeonScreen from './MidSection/Dungeon/DungeonScreen';
 
 const Main = ({ route }) => {
-  const [middleContent, setMiddleContent] = useState('랭킹'); // 중간화면 상태 관리 (기본 상태 ; 랭킹)
+  const { triggerAttackAnimation } = useContext(BattleContext);
+  const userData = route?.params?.user || {};
+  const [middleContent, setMiddleContent] = useState('랭킹');
   const [isChatBotVisible, setIsChatBotVisible] = useState(false);
-  const { answeredQuestions } = useContext(AppContext);
-  // 로그인 시 전달받은 사용자 데이터
-  const userData = route.params?.user || {};
+  const [triggerDungeonAnimation, setTriggerDungeonAnimation] = useState(false);
+  const [triggerResetAnimation, setTriggerResetAnimation] = useState(false);
+  const [resetMonsterTrigger, setResetMonsterTrigger] = useState(false);
+  useEffect(() => {
+    const backAction = () => {
+      Alert.alert('게임 종료', '정말로 게임을 종료하시겠습니까?', [
+        { text: '취소', onPress: () => null, style: 'cancel' },
+        { text: '확인', onPress: () => BackHandler.exitApp() },
+      ]);
+      return true;
+    };
 
-  // 중간 화면 상태 업데이트
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction);
+
+    return () => backHandler.remove();
+  }, []);
+
   const updateMiddleContent = (content) => {
-    if (content === '챗봇') {
+    if (content === '요정') {
       setIsChatBotVisible(true);
     } else {
       setMiddleContent(content);
+      if (content === '던전') {
+        setTriggerDungeonAnimation(true);
+        setTimeout(() => setTriggerDungeonAnimation(false), 300);
+      } else {
+        setTriggerResetAnimation(true);
+        setTimeout(() => setTriggerResetAnimation(false), 300);
+      }
     }
   };
 
-  // 챗봇 팝업 닫기
-  const closeChatBot = () => {
-    setIsChatBotVisible(false);
-  };
-
-  // 중간 화면 렌더링
   const renderMiddleContent = () => {
     switch (middleContent) {
       case '던전':
-        return <DungeonScreen userID={userData.userID} />;
+        return <DungeonScreen userID={userData.userID}
+          setResetMonsterTrigger={setResetMonsterTrigger}
+          triggerAttackAnimation={triggerAttackAnimation}
+        />;
       case '랭킹':
         return <RankingScreen />;
       case '스텟':
@@ -46,23 +63,26 @@ const Main = ({ route }) => {
 
   return (
     <View style={styles.container}>
-      <TopSection style={styles.top} resizeMode="cover" />
+      <TopSection
+        triggerDungeonAnimation={triggerDungeonAnimation}
+        triggerResetAnimation={triggerResetAnimation}
+        triggerAttack={triggerAttackAnimation} // Context에서 가져온 상태 전달
+        resetMonsterTrigger={resetMonsterTrigger}
+      />
       <View style={styles.header}>
         <Text style={styles.headerText}>{middleContent}</Text>
       </View>
       <View style={styles.middle}>{renderMiddleContent()}</View>
       <Button style={styles.bottom} updateContent={updateMiddleContent} />
-
-      {/* 챗봇 팝업 구현 */}
       <Modal
-        animationType="fade"
         transparent={true}
         visible={isChatBotVisible}
-        onRequestClose={closeChatBot}
+        onRequestClose={() => setIsChatBotVisible(false)}
       >
         <View style={styles.modalBackground}>
           <View style={styles.chatBotContainer}>
-            <ChatBotScreen onClose={closeChatBot} />
+            <Text style={{ fontSize: 18, fontWeight: 'bold', marginBottom: 10 }}>요정의 도움</Text>
+            <ChatBotScreen onClose={() => setIsChatBotVisible(false)} />
           </View>
         </View>
       </Modal>
@@ -71,50 +91,13 @@ const Main = ({ route }) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'space-between',
-    width: '100%',
-  },
-  top: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  header: {
-    padding: 15,
-    backgroundColor: '#F5F5DC',
-    alignItems: 'center',
-  },
-  headerText: {
-    fontSize: 24,
-    fontWeight: 'bold',
-  },
-  middle: {
-    flex: 1.5,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'white',
-  },
-  bottom: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    padding: 10,
-    backgroundColor: '#007bff',
-  },
-  modalBackground: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-  },
-  chatBotContainer: {
-    width: '80%',
-    height: '70%',
-    backgroundColor: '#D3D3A3',
-    borderRadius: 10,
-    padding: 10,
-  },
+  container: { flex: 1, justifyContent: 'space-between', width: '100%' },
+  header: { padding: 15, backgroundColor: '#F5F5DC', alignItems: 'center' },
+  headerText: { fontSize: 24, fontWeight: 'bold' },
+  middle: { flex: 1.5, justifyContent: 'center', alignItems: 'center', backgroundColor: 'white' },
+  bottom: { flexDirection: 'row', justifyContent: 'space-around', padding: 10, backgroundColor: '#007bff' },
+  modalBackground: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.5)' },
+  chatBotContainer: { width: '90%', height: '80%', backgroundColor: '#D3D3A3', borderRadius: 10, padding: 10 },
 });
 
 export default Main;

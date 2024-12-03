@@ -1,14 +1,20 @@
 import React from 'react';
 import { Image, StyleSheet } from 'react-native';
 
-const Monster = () => {
+const Monster = ({ state }) => {
+  // 상태에 따라 이미지 변경
+  const source = {
+    standing: require('./monster/monster.png'),
+    hit: require('./monster/monster_hit.gif'),
+  }[state || 'standing']; // 기본값은 'standing'
+
   return (
     <Image
-      source={require('./monster/monster.png')}
+      source={source}
       style={styles.monster}
     />
   );
-}
+};
 
 const styles = StyleSheet.create({
   monster: {

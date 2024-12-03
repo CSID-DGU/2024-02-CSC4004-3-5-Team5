@@ -6,9 +6,7 @@ import NewsDetail from './NewsDetail';
 import Quiz from './Quiz';
 import { API_CONFIG } from '../../../ApiConfig';
 
-
-
-const DungeonScreen = () => {
+const DungeonScreen = ({ triggerAttackAnimation, setResetMonsterTrigger }) => {
   const [currentScreen, setCurrentScreen] = useState('newsList');
   const [newsData, setNewsData] = useState([]);
   const [selectedNews, setSelectedNews] = useState(null);
@@ -21,7 +19,6 @@ const DungeonScreen = () => {
       setError(null);
       try {
         const response = await axios.get(`${API_CONFIG.news}/news`);
-        // console.log(response);
         const { newsList } = response.data;
 
         const formattedNewsData = newsList.map((news) => ({
@@ -39,17 +36,7 @@ const DungeonScreen = () => {
 
         setNewsData(formattedNewsData);
       } catch (err) {
-        if (err.response) {
-          const serverError = err.response.data.error || JSON.stringify(err.response.data);
-          console.error(`서버 오류: ${err.response.status} - ${serverError}`);
-          setError(`서버 오류: ${err.response.status} - ${serverError}`);
-        } else if (err.request) {
-          console.error('서버에 응답이 없습니다. 네트워크를 확인하세요.');
-          setError('서버에 응답이 없습니다.');
-        } else {
-          console.error(`오류 발생: ${err.message}`);
-          setError(`오류 발생: ${err.message}`);
-        }
+        setError(err.message || '오류 발생');
       } finally {
         setLoading(false);
       }
@@ -66,12 +53,7 @@ const DungeonScreen = () => {
   const renderScreen = () => {
     switch (currentScreen) {
       case 'newsList':
-        return (
-          <NewsList
-            newsData={newsData}
-            onSelect={handleNewsSelect}
-          />
-        );
+        return <NewsList newsData={newsData} onSelect={handleNewsSelect} />;
       case 'newsDetail':
         return (
           <NewsDetail
@@ -84,6 +66,7 @@ const DungeonScreen = () => {
         return (
           <Quiz
             quizData={selectedNews}
+            setResetMonsterTrigger={setResetMonsterTrigger} // 상태 전달
             onGoToNewsDetail={() => setCurrentScreen('newsDetail')}
             onGoToNewsList={() => setCurrentScreen('newsList')}
           />

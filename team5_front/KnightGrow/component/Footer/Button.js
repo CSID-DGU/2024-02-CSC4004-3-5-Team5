@@ -5,7 +5,7 @@ const Button = ({ updateContent }) => {
   const [selectedButton, setSelectedButton] = useState('랭킹');
 
   const handleButtonPress = (buttonName) => {
-    if (buttonName === '챗봇') {
+    if (buttonName === '요정') {
       updateContent(buttonName);
       return;
     }
@@ -30,12 +30,12 @@ const Button = ({ updateContent }) => {
 
   return (
     <View style={styles.bottom}>
-      {['던전', '랭킹', '스텟', '챗봇'].map((buttonName) => (
+      {['던전', '랭킹', '스텟', '요정'].map((buttonName) => (
         <TouchableOpacity
           key={buttonName}
           onPress={() => handleButtonPress(buttonName)}
           style={[styles.button, getButtonStyle(buttonName)]}
-          disabled={selectedButton === buttonName && buttonName !== '챗봇'}
+          disabled={selectedButton === buttonName && buttonName !== '요정'}
         >
           <Text style={[styles.buttonText, getTextStyle(buttonName)]}>
             {buttonName}
