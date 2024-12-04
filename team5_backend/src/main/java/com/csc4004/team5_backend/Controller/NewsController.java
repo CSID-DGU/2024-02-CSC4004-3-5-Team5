@@ -29,6 +29,7 @@ import java.util.Optional;
 public class NewsController {
     private final NewsService newsService;
     private final LevelService levelService;
+    private final UserRepository userRepository;
 
     @PostMapping("/rag/news")
     public ResponseEntity<?> getNews(@RequestBody GetNewsDTO getNewsDTO) {

@@ -67,9 +67,12 @@ public class MainController {
             }
             else {
                 User userStat = userRepository.findById(user.getUserID()).get();
+                List<Integer> expList = loginService.getExp(userStat);
                 response.put("code", "SU");
                 response.put("message", "Success.");
                 response.put("loginUser", userStat);
+                response.put("gainedExpInThisLevel", expList.get(0));
+                response.put("requiredExpForNextLevel", expList.get(1));
                 return ResponseEntity.status(HttpStatus.OK).body(response);
             }
         } catch (Exception e) {

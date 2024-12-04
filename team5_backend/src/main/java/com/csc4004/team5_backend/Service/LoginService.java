@@ -20,6 +20,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -139,5 +140,30 @@ public class LoginService {
 
     public List<User> getRank() {
         return userRepository.findTop10ByOrderByExpDesc();
+    }
+
+    public List<Integer> getExp(User user) {
+        int currentLevel = user.getLevel(); // 8
+        int currentExp = user.getExp(); // 1100
+        List<Integer> expList = new ArrayList<>();
+        int[] threshold = {0, 100, 200, 320, 460, 620, 800, 1000, 1220, 1460,
+                1720, 2000, 2300, 2620, 2960, 3320, 3700, 4100, 4520, 4960,
+                5420, 5900, 6400, 6920, 7460, 8020, 8600, 9200, 9820, 10460,
+                11120, 11800, 12500, 13220, 13960, 14720, 15500, 16300, 17120, 17960,
+                18820, 19700, 20600, 21520, 22460, 23420, 24400, 25400, 26420, 27460,
+                28520, 29600, 30700, 32138, 33610, 35117, 36659, 38237, 39851, 41501,
+                43188, 44912, 46674, 48473, 50311, 52187, 54102, 56057, 58051, 60085,
+                62160, 64276, 66433, 68632, 70873, 73157, 75484, 77854, 80268, 82727,
+                85230, 87779, 90373, 93013, 95700, 98434, 101216, 104046, 106924, 109851,
+                112828, 115855, 118932, 122060, 125240, 128472, 131756, 135093, 138484, 141929,
+                Integer.MAX_VALUE};
+
+        int gainedExpInThisLevel = currentExp - threshold[currentLevel - 1];
+        int requiredExpForNextLevel = (currentLevel == 100) ? 0 : threshold[currentLevel] - currentExp;
+
+        expList.add(0, gainedExpInThisLevel);
+        expList.add(1, requiredExpForNextLevel);
+        
+        return expList;
     }
 }

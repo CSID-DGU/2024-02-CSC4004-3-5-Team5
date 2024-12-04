@@ -30,13 +30,14 @@ public class LevelService {
 
         // updateExp : previousExp + consecutiveDay * newsExp(by difficulty) ?
         int previousExp = currentUser.getExp();
-        int currentExp = previousExp + (int)(1 + currentUser.getConsecutiveDay() * 0.1) * 100; // test
+        int currentExp = previousExp + 100 + 10 * currentUser.getConsecutiveDay();
         currentUser.setExp(currentExp);
         result.put("gainedExp", currentExp - previousExp);
 
         // updateLevel
         int previousLevel = currentUser.getLevel();
         int currentLevel = levelLogic(currentExp);
+
         if (currentLevel != previousLevel) {
             currentUser.setLevel(currentLevel);
             result.put("levelUp", true);
@@ -46,33 +47,29 @@ public class LevelService {
         else {
             result.put("levelUp", false);
         }
+
         userRepository.save(currentUser);
         return result;
     }
 
     public int levelLogic(int currentExp) {
-        if (currentExp < 100) return 1;
-        if (currentExp < 300) return 2;
-        if (currentExp < 600) return 3;
-        if (currentExp < 1000) return 4;
+        int[] threshold = {0, 100, 200, 320, 460, 620, 800, 1000, 1220, 1460,
+                1720, 2000, 2300, 2620, 2960, 3320, 3700, 4100, 4520, 4960,
+                5420, 5900, 6400, 6920, 7460, 8020, 8600, 9200, 9820, 10460,
+                11120, 11800, 12500, 13220, 13960, 14720, 15500, 16300, 17120, 17960,
+                18820, 19700, 20600, 21520, 22460, 23420, 24400, 25400, 26420, 27460,
+                28520, 29600, 30700, 32138, 33610, 35117, 36659, 38237, 39851, 41501,
+                43188, 44912, 46674, 48473, 50311, 52187, 54102, 56057, 58051, 60085,
+                62160, 64276, 66433, 68632, 70873, 73157, 75484, 77854, 80268, 82727,
+                85230, 87779, 90373, 93013, 95700, 98434, 101216, 104046, 106924, 109851,
+                112828, 115855, 118932, 122060, 125240, 128472, 131756, 135093, 138484, 141929,
+                Integer.MAX_VALUE};
 
-        // 5레벨 이상은 경험치 범위에 따라 계산
-        int level = 5;
-        int[] thresholds = {1000, 5000, 10000, 20000, 50000, 100000};
-        int[] levelRanges = {9, 20, 20, 20, 20, 11}; // 각 구간의 레벨 수 (9~100)
-
-        for (int i = 0; i < thresholds.length; i++) {
-            int maxLevel = level + levelRanges[i];
-            int expPerLevel = thresholds[i] / levelRanges[i];
-
-            for (int lvl = level; lvl < maxLevel; lvl++) {
-                if (currentExp < 1000 + expPerLevel * (lvl - 4)) {
-                    return lvl;
-                }
+        for (int i = 1; i <= 100; i ++) {
+            if (currentExp < threshold[i]) {
+                return i;
             }
-            // 해당 구간을 넘어섰다면 다음 구간으로 이동
-            level = maxLevel;
         }
-        return 100; // 경험치가 100레벨 이상이면 최고 레벨 반환
+        return 100;
     }
 }
