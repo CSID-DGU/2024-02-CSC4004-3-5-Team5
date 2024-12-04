@@ -21,7 +21,7 @@ const DungeonScreen = ({ setResetMonsterTrigger }) => {
     try {
       const response = await axios.get(`${API_CONFIG.news}/news`);
       const { newsList, readNewsList } = response.data;
-      console.log(response.data);
+      // console.log(response.data);
 
       // console.log({newsList});
       const formattedNewsData = newsList.map((news) => ({

@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
+import { StatusBar } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import LoginScreen from './component/LoginScreen';
 import KaKaoLogin from './component/KaKaoLogin';
 import Main from './component/Main';
-import { AppProvider } from './AppContext';
 import { BattleProvider } from './BattleContext';
 
 const Stack = createStackNavigator();
@@ -14,7 +14,6 @@ const App = () => {
 
   return (
     <BattleProvider>
-      <AppProvider>
         <NavigationContainer>
           <Stack.Navigator initialRouteName="Login">
             <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
@@ -34,7 +33,6 @@ const App = () => {
             </Stack.Screen>
           </Stack.Navigator>
         </NavigationContainer>
-      </AppProvider>
     </BattleProvider>
   );
 };

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome5'; // FontAwesome5 아이콘 사용
+import Icon from 'react-native-vector-icons/FontAwesome5';
 
 const Button = ({ updateContent }) => {
   const [selectedButton, setSelectedButton] = useState('랭킹');
@@ -47,13 +47,11 @@ const Button = ({ updateContent }) => {
           disabled={selectedButton === buttonName && buttonName !== '요정'}
         >
           <View style={styles.iconAndText}>
-            {/* 아이콘 추가 */}
             <Icon
               name={icons[buttonName]}
               size={24}
               color={getTextStyle(buttonName).color}
             />
-            {/* 텍스트 */}
             <Text style={[styles.buttonText, getTextStyle(buttonName)]}>
               {buttonName}
             </Text>

@@ -2,7 +2,6 @@ import React, { useState, useContext } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import axios from 'axios';
 import { BattleContext } from '../../../BattleContext';
-import { AppContext } from '../../../AppContext';
 import { API_CONFIG } from '../../../ApiConfig';
 
 const Quiz = ({ quizData, onGoToNewsDetail, onGoToNewsList, setResetMonsterTrigger }) => {
@@ -10,7 +9,6 @@ const Quiz = ({ quizData, onGoToNewsDetail, onGoToNewsList, setResetMonsterTrigg
   const [isAnswered, setIsAnswered] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
   const { triggerAttackSequence } = useContext(BattleContext);
-  const { markQuestionAsAnswered } = useContext(AppContext);
 
 
   const handleOptionPress = async (selectedOption) => {
@@ -21,7 +19,6 @@ const Quiz = ({ quizData, onGoToNewsDetail, onGoToNewsList, setResetMonsterTrigg
     if (selectedIndex === quizData.quizAnswer) {
       setIsCorrect(true);
       setIsAnswered(true);
-      markQuestionAsAnswered(quizData.id);
 
       triggerAttackSequence();
       await updateExp();
