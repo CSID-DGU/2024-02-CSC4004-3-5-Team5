@@ -1,5 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { View, StyleSheet, Modal, Text, BackHandler, Alert } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome5'; // FontAwesome5 아이콘 사용
 import { BattleContext } from '../BattleContext';
 import TopSection from './TopSection/TopSection';
 import RankingScreen from './MidSection/Ranking/RankingScreen';
@@ -16,6 +17,7 @@ const Main = ({ route }) => {
   const [triggerDungeonAnimation, setTriggerDungeonAnimation] = useState(false);
   const [triggerResetAnimation, setTriggerResetAnimation] = useState(false);
   const [resetMonsterTrigger, setResetMonsterTrigger] = useState(false);
+
   useEffect(() => {
     const backAction = () => {
       Alert.alert('게임 종료', '정말로 게임을 종료하시겠습니까?', [
@@ -48,10 +50,13 @@ const Main = ({ route }) => {
   const renderMiddleContent = () => {
     switch (middleContent) {
       case '던전':
-        return <DungeonScreen userID={userData.userID}
-          setResetMonsterTrigger={setResetMonsterTrigger}
-          triggerAttackAnimation={triggerAttackAnimation}
-        />;
+        return (
+          <DungeonScreen
+            userID={userData.userID}
+            setResetMonsterTrigger={setResetMonsterTrigger}
+            triggerAttackAnimation={triggerAttackAnimation}
+          />
+        );
       case '랭킹':
         return <RankingScreen />;
       case '스텟':
@@ -59,6 +64,14 @@ const Main = ({ route }) => {
       default:
         return <RankingScreen />;
     }
+  };
+
+  // 아이콘 매핑
+  const icons = {
+    던전: 'dungeon',
+    랭킹: 'trophy',
+    스텟: 'user',
+    요정: 'comment-dots',
   };
 
   return (
@@ -69,8 +82,13 @@ const Main = ({ route }) => {
         triggerAttack={triggerAttackAnimation}
         resetMonsterTrigger={resetMonsterTrigger}
       />
+      {/* 헤더에 middleContent와 아이콘 추가 */}
       <View style={styles.header}>
-        <Text style={styles.headerText}>{middleContent}</Text>
+        <Text style={styles.headerText}>
+          <Icon name={icons[middleContent]} size={20} color="#000" /> {/* 아이콘 추가 */}
+          {'  '}
+          {middleContent}
+        </Text>
       </View>
       <View style={styles.middle}>{renderMiddleContent()}</View>
       <Button style={styles.bottom} updateContent={updateMiddleContent} />
@@ -91,34 +109,36 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'space-between',
-    width: '100%'
+    width: '100%',
   },
   header: {
     padding: 15,
     backgroundColor: '#F5F5DC',
-    alignItems: 'center'
+    alignItems: 'center',
+    flexDirection: 'row',
   },
   headerText: {
     fontSize: 24,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    paddingLeft: 20,
   },
   middle: {
     flex: 1.5,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'white'
+    backgroundColor: 'white',
   },
   bottom: {
     flexDirection: 'row',
     justifyContent: 'space-around',
     padding: 10,
-    backgroundColor: '#007bff'
+    backgroundColor: '#007bff',
   },
   modalBackground: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)'
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
 });
 

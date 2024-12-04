@@ -1,9 +1,7 @@
 import React, { useContext } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
-import { AppContext } from '../../../AppContext';
 
-const NewsList = ({ newsData, onSelect }) => {
-  const { answeredQuestions } = useContext(AppContext);
+const NewsList = ({ newsData, answeredNewsList, onSelect }) => {
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -12,10 +10,10 @@ const NewsList = ({ newsData, onSelect }) => {
             key={news.id}
             style={[
               styles.newsButton,
-              answeredQuestions.includes(news.id) && styles.answeredButton,
+              answeredNewsList.includes(news.id) && styles.answeredButton,
             ]}
-            onPress={() => !answeredQuestions.includes(news.id) && onSelect(news)}
-            disabled={answeredQuestions.includes(news.id)} // 비활성화
+            onPress={() => !answeredNewsList.includes(news.id) && onSelect(news)}
+            disabled={answeredNewsList.includes(news.id)} // 비활성화
           >
             <Text style={styles.newsTitle}>{news.newsTitle}</Text>
           </TouchableOpacity>

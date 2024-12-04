@@ -33,7 +33,9 @@ const Quiz = ({ quizData, onGoToNewsDetail, onGoToNewsList, setResetMonsterTrigg
   {/* 백엔드에 유저 경험치 up 요청 */}
   const updateExp = async () => {
     try {
-      const response = await axios.post(`${API_CONFIG.news}/exp`);
+      const response = await axios.post(`${API_CONFIG.news}/exp`,{
+        newsID: quizData.id,
+      });
       if (response.status === 200 && response.data.code === 'SU') {
         const info = response.data.info;
         // console.log(info.gainedExp);

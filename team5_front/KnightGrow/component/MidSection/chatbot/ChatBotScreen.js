@@ -6,6 +6,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const STORAGE_KEY = 'chatbot_messages';
 
+const DEFAULT_BOT_MESSAGE = { 
+  role: 'bot', 
+  text: '뉴스 기사에 대해 궁금하신 내용은 저에게 물어봐주세요!' 
+};
+
 const sendMessageToBackend = async (message) => {
   try {
     const response = await axios.post(`${API_CONFIG.chatbot}/receive_json`, {
@@ -28,7 +33,7 @@ const sendMessageToBackend = async (message) => {
 
 const ChatBotScreen = ({ onClose }) => {
   const [userMessage, setUserMessage] = useState('');
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState([DEFAULT_BOT_MESSAGE]);
   const [loading, setLoading] = useState(false);
   const [profileImage, setProfileImage] = useState(null);
 
@@ -125,7 +130,7 @@ const ChatBotScreen = ({ onClose }) => {
   const handleClearMessages = async () => {
     try {
       await AsyncStorage.removeItem(STORAGE_KEY);
-      setMessages([]);
+      setMessages([DEFAULT_BOT_MESSAGE]);
       Alert.alert('초기화 완료', '대화 기록이 초기화되었습니다.');
     } catch (error) {
       console.error('Failed to clear messages:', error);

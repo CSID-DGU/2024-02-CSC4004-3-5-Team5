@@ -21,7 +21,7 @@ const RankingScreen = () => {
         const ranking = response.data.ranking;
   
         if (ranking.length > 0) {
-          setRankingData(ranking.slice(0, 10));
+          setRankingData(ranking.slice(0, 100));
         } else {
           setRankingData([]);
           setError('현재 랭킹에 유저가 없습니다.');
