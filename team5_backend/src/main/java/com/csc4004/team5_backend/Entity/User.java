@@ -1,14 +1,15 @@
 package com.csc4004.team5_backend.Entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
+import java.io.IOException;
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Setter
@@ -44,4 +45,9 @@ public class User {
 
     @Column(name = "consecutiveDay", columnDefinition = "int default 1")
     private Integer consecutiveDay;
+
+    @ElementCollection
+    @CollectionTable(name = "integer_list", joinColumns = @JoinColumn(name = "entity_id"))
+    @Column(name = "integer_value")
+    private List<Integer> integers;
 }

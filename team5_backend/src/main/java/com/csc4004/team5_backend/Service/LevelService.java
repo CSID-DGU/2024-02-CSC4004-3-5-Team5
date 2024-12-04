@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -16,7 +17,7 @@ import java.util.Map;
 public class LevelService {
     private final UserRepository userRepository;
 
-    public Map<String, Object> updateExp(User user) {
+    public Map<String, Object> updateExp(User user, int newsId) {
         Map<String, Object> result = new LinkedHashMap<>();
         User currentUser = userRepository.findById(user.getUserID())
                         .orElseThrow(() -> new EntityNotFoundException("Logined User Not In User Database"));
@@ -47,6 +48,11 @@ public class LevelService {
         else {
             result.put("levelUp", false);
         }
+
+        // update read news
+        List<Integer> readNews = currentUser.getIntegers();
+        readNews.add(newsId);
+        currentUser.setIntegers(readNews);
 
         userRepository.save(currentUser);
         return result;

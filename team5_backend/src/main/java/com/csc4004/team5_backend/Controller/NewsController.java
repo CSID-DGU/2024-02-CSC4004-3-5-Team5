@@ -1,6 +1,7 @@
 package com.csc4004.team5_backend.Controller;
 
 import com.csc4004.team5_backend.DTO.GetNewsDTO;
+import com.csc4004.team5_backend.DTO.NewsIdDTO;
 import com.csc4004.team5_backend.Entity.News;
 import com.csc4004.team5_backend.Entity.User;
 import com.csc4004.team5_backend.Repository.UserRepository;
@@ -66,16 +67,19 @@ public class NewsController {
     }
 
     @GetMapping("/news")
-    public ResponseEntity<?> getNowNews() {
+    public ResponseEntity<?> getNowNews(HttpSession session) {
         Map<String, Object> response = new LinkedHashMap<>();
         LocalDateTime now = LocalDateTime.now(); // "2024-11-20T20:04:46.561371"
-
+        User sessionData = (User) session.getAttribute("userInfo");
         try {
+            User loginUser = userRepository.findById(sessionData.getUserID()).get();
             List<News> newsList = newsService.getNowNews(now);
             if (newsList.isEmpty()) {
                 throw new Exception("news not found : " + now);
             }
             response.put("code", "SU");
+            response.put("loginUser", loginUser.getUserName());
+            response.put("readNewsList", loginUser.getIntegers());
             response.put("message", newsList.size() + " news found Succeed.");
             response.put("request time", now);
             response.put("newsList", newsList);
@@ -88,15 +92,16 @@ public class NewsController {
     }
 
     @PostMapping("/exp")
-    public ResponseEntity<?> updateExp(HttpSession session) {
+    public ResponseEntity<?> updateExp(@RequestBody NewsIdDTO newsIdDTO, HttpSession session) {
         Map<String, Object> response = new LinkedHashMap<>();
         User loginUser = (User) session.getAttribute("userInfo");
+        int newsId = newsIdDTO.getNewsID();
 
         try {
             if (loginUser == null) {
                 throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not logged in");
             }
-            Map<String, Object> resultInfoMap = levelService.updateExp(loginUser);
+            Map<String, Object> resultInfoMap = levelService.updateExp(loginUser, newsId);
             response.put("code", "SU");
             response.put("message", "update Exp Successfully.");
             response.put("info", resultInfoMap);
