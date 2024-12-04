@@ -29,7 +29,7 @@ export const BattleProvider = ({ children }) => {
   };
 
   const resetMonster = () => {
-    setMonsterState('standing'); // 몬스터를 다시 등장시키기
+    setMonsterState('standing');
   };
 
   return (
@@ -40,7 +40,7 @@ export const BattleProvider = ({ children }) => {
         knightPosition,
         triggerAttackAnimation,
         triggerAttackSequence,
-        resetMonster, // 새로 추가된 메서드
+        resetMonster,
       }}
     >
       {children}

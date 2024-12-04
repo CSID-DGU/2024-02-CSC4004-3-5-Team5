@@ -1,17 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, StyleSheet, ScrollView, ActivityIndicator, Alert } from 'react-native';
+import { View, Text, Image, StyleSheet, ScrollView, ActivityIndicator } from 'react-native';
 import axios from 'axios';
 import { API_CONFIG } from '../../../ApiConfig';
 
-const StatScreen = ({
-  getLevelUpThreshold = (level) => 100 * level, // 레벨 업 경험치 계산 로직 기본값
-  getRank = (level) => ({ rank: 'Unknown', image: null }), // 랭크와 이미지 계산 기본값
-}) => {
-  const [characterData, setCharacterData] = useState(null); // 사용자 데이터
-  const [loading, setLoading] = useState(true); // 로딩 상태
-  const [error, setError] = useState(null); // 에러 상태
+const StatScreen = ({ }) => {
+  const [characterData, setCharacterData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // 사용자 데이터 호출 함수
+  {/* 백엔드에 유저 stat 요청 */ }
   const fetchUserData = async () => {
     setLoading(true);
     try {
@@ -22,7 +19,8 @@ const StatScreen = ({
       });
 
       if (response.status === 200 && response.data.code === 'SU') {
-        setCharacterData(response.data.loginUser);
+        // console.log(response.data);
+        setCharacterData(response.data);
       } else {
         throw new Error(response.data.message || '사용자 데이터를 가져오지 못했습니다.');
       }
@@ -35,7 +33,7 @@ const StatScreen = ({
   };
 
   useEffect(() => {
-    fetchUserData(); // 컴포넌트가 마운트될 때 사용자 데이터 가져오기
+    fetchUserData();
   }, []);
 
   if (loading) {
@@ -64,15 +62,20 @@ const StatScreen = ({
   }
 
   const {
+    loginUser = {},
+    gainedExpInThisLevel = 0,
+    requiredExpForNextLevel = 0,
+  } = characterData || {};
+
+  const {
     level = 0,
-    exp = 0,
     winCount = 0,
     userName = 'Unknown',
     profileImage = null,
-  } = characterData;
+    consecutiveDay = 0,
+  } = loginUser || {};
 
-  const { rank, image } = getRank(level);
-  const levelUpThreshold = getLevelUpThreshold(level);
+  const weight = 1 + 0.1 * consecutiveDay;
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -88,29 +91,24 @@ const StatScreen = ({
       {/* 스탯 정보 */}
       <View style={styles.infoContainer}>
         <View style={styles.statRow}>
-          <Text style={styles.statName}>Name</Text>
+          <Text style={styles.statName}>이름</Text>
           <Text style={styles.statValue}>{userName}</Text>
         </View>
         <View style={styles.statRow}>
-          <Text style={styles.statName}>Level</Text>
+          <Text style={styles.statName}>레벨</Text>
           <Text style={styles.statValue}>{level}</Text>
         </View>
         <View style={styles.statRow}>
-          <Text style={styles.statName}>Rank</Text>
-          <View style={styles.statValueContainer}>
-            <Text style={styles.statValue}>{rank}</Text>
-            {image && <Image source={image} style={styles.rankImage} />}
-          </View>
+          <Text style={styles.statName}>경험치</Text>
+          <Text style={styles.statValue}>{gainedExpInThisLevel}/{requiredExpForNextLevel + gainedExpInThisLevel}</Text>
         </View>
         <View style={styles.statRow}>
-          <Text style={styles.statName}>Experience</Text>
-          <Text style={styles.statValue}>
-            {exp} / {levelUpThreshold}
-          </Text>
-        </View>
-        <View style={styles.statRow}>
-          <Text style={styles.statName}>Win Count</Text>
+          <Text style={styles.statName}>승리 횟수</Text>
           <Text style={styles.statValue}>{winCount}</Text>
+        </View>
+        <View style={styles.statRow}>
+          <Text style={styles.statName}>연속 출석일</Text>
+          <Text style={styles.statValue}>{consecutiveDay} 일(경험치 {weight}배)</Text>
         </View>
       </View>
     </ScrollView>
@@ -125,7 +123,7 @@ const styles = StyleSheet.create({
   profileImageContainer: {
     alignItems: 'center',
     padding: 16,
-    marginBottom: 16,
+    marginBottom: 8,
   },
   profileImage: {
     width: 150,
@@ -139,13 +137,14 @@ const styles = StyleSheet.create({
   },
   infoContainer: {
     padding: 16,
+    marginBottom: 30,
   },
   statRow: {
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: 10,
+    paddingVertical: 8,
     borderBottomWidth: 1,
     borderColor: '#ddd',
   },
@@ -154,18 +153,9 @@ const styles = StyleSheet.create({
     color: '#333',
     flex: 1,
   },
-  statValueContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
   statValue: {
     fontSize: 16,
     color: '#333',
-  },
-  rankImage: {
-    width: 20,
-    height: 20,
-    marginLeft: 10,
   },
   loaderContainer: {
     flex: 1,

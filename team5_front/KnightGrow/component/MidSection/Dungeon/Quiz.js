@@ -12,30 +12,32 @@ const Quiz = ({ quizData, onGoToNewsDetail, onGoToNewsList, setResetMonsterTrigg
   const { triggerAttackSequence } = useContext(BattleContext);
   const { markQuestionAsAnswered } = useContext(AppContext);
 
+
   const handleOptionPress = async (selectedOption) => {
     if (isAnswered) return;
 
     const selectedIndex = quizData.quizOptions.indexOf(selectedOption);
 
     if (selectedIndex === quizData.quizAnswer) {
-      setMessage('정답입니다! 경험치 100 획득');
       setIsCorrect(true);
       setIsAnswered(true);
-      markQuestionAsAnswered(quizData.id); // 백엔드와 동기화
+      markQuestionAsAnswered(quizData.id);
 
-      triggerAttackSequence(); // 기사 공격 애니메이션 실행
-      await updateExp(); // 경험치 업데이트
+      triggerAttackSequence();
+      await updateExp();
     } else {
       setMessage('오답입니다!');
     }
   };
 
+  {/* 백엔드에 유저 경험치 up 요청 */}
   const updateExp = async () => {
     try {
-      console.log('경험치 업데이트 요청 전송');
       const response = await axios.post(`${API_CONFIG.news}/exp`);
       if (response.status === 200 && response.data.code === 'SU') {
         const info = response.data.info;
+        // console.log(info.gainedExp);
+        setMessage(`정답입니다! 경험치 ${info.gainedExp}획득`);
         if (info.levelUp) {
           Alert.alert(
             '레벨업!',
@@ -57,7 +59,8 @@ const Quiz = ({ quizData, onGoToNewsDetail, onGoToNewsList, setResetMonsterTrigg
 
   const handleBackButton = () => {
     if (isCorrect) {
-      setResetMonsterTrigger(true); // 몬스터 다시 등장 트리거 활성화
+      setResetMonsterTrigger(true);
+      setTimeout(() => setResetMonsterTrigger(false), 100);
       onGoToNewsList();
     } else {
       onGoToNewsDetail();
@@ -73,7 +76,7 @@ const Quiz = ({ quizData, onGoToNewsDetail, onGoToNewsList, setResetMonsterTrigg
           onPress={handleBackButton}
         >
           <Text style={styles.navigationButtonText}>
-            {isCorrect ? '돌아가기' : '뉴스 보러가기'}
+            {isCorrect ? '돌아가기' : '← 뉴스 보러가기'}
           </Text>
         </TouchableOpacity>
       </View>
@@ -142,16 +145,6 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
     fontWeight: 'bold',
-  },
-  userInfo: {
-    marginTop: 20,
-    padding: 10,
-    backgroundColor: '#f9f9f9',
-    borderRadius: 5,
-  },
-  userInfoText: {
-    fontSize: 16,
-    color: '#333',
   },
 });
 

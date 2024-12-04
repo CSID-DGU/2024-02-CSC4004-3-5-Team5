@@ -2,11 +2,10 @@ import React from 'react';
 import { Image, StyleSheet } from 'react-native';
 
 const Knight = ({ state }) => {
-  // 상태에 따라 이미지 변경
   const source = {
     standing: require('./knight/standing.gif'),
-    attacking: require('./knight/attack1.gif'),
-  }[state || 'standing']; // 기본값은 'standing'
+    attacking: require('./knight/attack.gif'),
+  }[state || 'standing'];
 
   return (
     <Image

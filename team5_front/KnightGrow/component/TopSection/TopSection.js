@@ -7,7 +7,7 @@ const TopSection = ({
   triggerDungeonAnimation,
   triggerResetAnimation,
   triggerAttack,
-  resetMonsterTrigger, // 몬스터를 다시 나타내는 트리거 추가
+  resetMonsterTrigger,
 }) => {
   const zoomValue = useRef(new Animated.Value(1)).current;
   const opacityValue = useRef(new Animated.Value(1)).current;
@@ -18,7 +18,7 @@ const TopSection = ({
   const [backgroundImage, setBackgroundImage] = useState(require('./backgroundImage/background1.png'));
   const [currentBackground, setCurrentBackground] = useState('default');
 
-  // 던전 진입 애니메이션
+  // 던전 진입
   useEffect(() => {
     if (triggerDungeonAnimation) {
       Animated.sequence([
@@ -51,7 +51,7 @@ const TopSection = ({
     }
   }, [triggerDungeonAnimation]);
 
-  // 초기화 애니메이션
+  // 던전 -> 랭킹, 스텟
   useEffect(() => {
     if (triggerResetAnimation && currentBackground !== 'default') {
       Animated.timing(opacityValue, {
@@ -70,7 +70,7 @@ const TopSection = ({
     }
   }, [triggerResetAnimation, currentBackground]);
 
-  // 공격 애니메이션
+  // Quiz 정답 시 공격
   useEffect(() => {
     if (triggerAttack && currentBackground === 'dungeon') {
       setKnightState('attacking');
@@ -99,20 +99,17 @@ const TopSection = ({
     }
   }, [triggerAttack, currentBackground]);
 
-  // 몬스터를 다시 등장시키는 트리거
+  // 몬스터 소환
   useEffect(() => {
     if (resetMonsterTrigger) {
-      setMonsterState('standing'); // 몬스터를 다시 등장 상태로 설정
+      setMonsterState('standing');
       Animated.timing(monsterOpacity, {
         toValue: 1,
-        duration: 300,
+        duration: 600,
         useNativeDriver: true,
-      }).start(() => {
-        console.log('Monster reappeared');
-      });
+      }).start();
     }
   }, [resetMonsterTrigger]);
-  
 
   return (
     <Animated.View
@@ -134,7 +131,7 @@ const TopSection = ({
             <>
               <Animated.View
                 style={[
-                  styles.knightLeft,
+                  styles.knightInDungeon,
                   { transform: [{ translateX: knightPosition }] },
                 ]}
               >
@@ -142,7 +139,7 @@ const TopSection = ({
               </Animated.View>
               <Animated.View
                 style={[
-                  styles.monsterRight,
+                  styles.monster,
                   { opacity: monsterOpacity },
                 ]}
               >
@@ -173,23 +170,26 @@ const styles = StyleSheet.create({
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'flex-end',
   },
   knightCenter: {
     justifyContent: 'center',
     alignItems: 'center',
     flex: 1,
+    paddingLeft: 50,
   },
-  knightLeft: {
+  knightInDungeon: {
     flex: 1,
     justifyContent: 'flex-start',
     alignItems: 'center',
     paddingLeft: 20,
   },
-  monsterRight: {
+  monster: {
     flex: 1,
     justifyContent: 'flex-end',
     alignItems: 'center',
     paddingRight: 20,
+    transform: [{ translateY: -15 }],
   },
 });
 

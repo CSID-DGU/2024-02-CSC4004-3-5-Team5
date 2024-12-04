@@ -2,22 +2,20 @@ import React, { createContext, useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const AppContext = createContext();
+// AsyncStorage.clear() // 테스트용 로컬 저장소 초기화
 
 export const AppProvider = ({ children }) => {
   const [answeredQuestions, setAnsweredQuestions] = useState([]);
-
+  {/* 접속 했을 때 이전 접속 시간과 비교해서 정각이 넘었다면 초기화 */ }
   useEffect(() => {
     const loadAnsweredQuestions = async () => {
       try {
-        // AsyncStorage.clear();
-
         const savedQuestions = await AsyncStorage.getItem('answeredQuestions');
         const lastAccessTime = await AsyncStorage.getItem('lastAccessTime');
         const currentTime = new Date();
         if (lastAccessTime) {
           const lastAccessDate = new Date(parseInt(lastAccessTime, 10));
           if (lastAccessDate.getHours() !== currentTime.getHours()) {
-            console.log('시(hour)가 바뀌어서 데이터를 초기화합니다.');
             await AsyncStorage.removeItem('answeredQuestions');
             await AsyncStorage.removeItem('lastAccessTime');
             setAnsweredQuestions([]);
@@ -37,6 +35,7 @@ export const AppProvider = ({ children }) => {
     loadAnsweredQuestions();
   }, []);
 
+  {/* 접속해 있을 때 정각에 초기화 */ }
   useEffect(() => {
     const interval = setInterval(async () => {
       const currentTime = new Date();
@@ -44,7 +43,6 @@ export const AppProvider = ({ children }) => {
       const currentSeconds = currentTime.getSeconds();
 
       if (currentMinutes === 0 && currentSeconds === 0) {
-        console.log('정각이 되어 데이터를 초기화합니다.');
         await AsyncStorage.removeItem('answeredQuestions');
         setAnsweredQuestions([]);
       }

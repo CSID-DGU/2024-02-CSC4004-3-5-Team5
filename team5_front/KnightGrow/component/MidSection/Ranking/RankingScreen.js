@@ -8,6 +8,7 @@ const RankingScreen = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  {/* 백엔드에 랭킹 요청 */}
   const fetchRankingData = async () => {
     try {
       const response = await axios.get(`${API_CONFIG.news}/main`, {
@@ -20,7 +21,7 @@ const RankingScreen = () => {
         const ranking = response.data.ranking;
   
         if (ranking.length > 0) {
-          setRankingData(ranking.slice(0, 5)); // 상위 5명만 표시
+          setRankingData(ranking.slice(0, 10));
         } else {
           setRankingData([]);
           setError('현재 랭킹에 유저가 없습니다.');

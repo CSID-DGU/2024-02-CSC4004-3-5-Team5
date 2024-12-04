@@ -10,7 +10,7 @@ import { BattleProvider } from './BattleContext';
 const Stack = createStackNavigator();
 
 const App = () => {
-  const [triggerAttackAnimation, setTriggerAttackAnimation] = useState(false); // 애니메이션 상태 추가
+  const [triggerAttackAnimation, setTriggerAttackAnimation] = useState(false);
 
   return (
     <BattleProvider>
@@ -27,8 +27,8 @@ const App = () => {
                 <Main
                   route={route || { params: {} }}
                   navigation={navigation}
-                  triggerAttackAnimation={triggerAttackAnimation} // 상태 전달
-                  setTriggerAttackAnimation={setTriggerAttackAnimation} // 상태 변경 함수 전달
+                  triggerAttackAnimation={triggerAttackAnimation}
+                  setTriggerAttackAnimation={setTriggerAttackAnimation}
                 />
               )}
             </Stack.Screen>

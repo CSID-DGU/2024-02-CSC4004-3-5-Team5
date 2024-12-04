@@ -66,7 +66,7 @@ const Main = ({ route }) => {
       <TopSection
         triggerDungeonAnimation={triggerDungeonAnimation}
         triggerResetAnimation={triggerResetAnimation}
-        triggerAttack={triggerAttackAnimation} // Context에서 가져온 상태 전달
+        triggerAttack={triggerAttackAnimation}
         resetMonsterTrigger={resetMonsterTrigger}
       />
       <View style={styles.header}>
@@ -80,10 +80,7 @@ const Main = ({ route }) => {
         onRequestClose={() => setIsChatBotVisible(false)}
       >
         <View style={styles.modalBackground}>
-          <View style={styles.chatBotContainer}>
-            <Text style={{ fontSize: 18, fontWeight: 'bold', marginBottom: 10 }}>요정의 도움</Text>
-            <ChatBotScreen onClose={() => setIsChatBotVisible(false)} />
-          </View>
+          <ChatBotScreen onClose={() => setIsChatBotVisible(false)} />
         </View>
       </Modal>
     </View>
@@ -91,13 +88,38 @@ const Main = ({ route }) => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: 'space-between', width: '100%' },
-  header: { padding: 15, backgroundColor: '#F5F5DC', alignItems: 'center' },
-  headerText: { fontSize: 24, fontWeight: 'bold' },
-  middle: { flex: 1.5, justifyContent: 'center', alignItems: 'center', backgroundColor: 'white' },
-  bottom: { flexDirection: 'row', justifyContent: 'space-around', padding: 10, backgroundColor: '#007bff' },
-  modalBackground: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.5)' },
-  chatBotContainer: { width: '90%', height: '80%', backgroundColor: '#D3D3A3', borderRadius: 10, padding: 10 },
+  container: {
+    flex: 1,
+    justifyContent: 'space-between',
+    width: '100%'
+  },
+  header: {
+    padding: 15,
+    backgroundColor: '#F5F5DC',
+    alignItems: 'center'
+  },
+  headerText: {
+    fontSize: 24,
+    fontWeight: 'bold'
+  },
+  middle: {
+    flex: 1.5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'white'
+  },
+  bottom: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    padding: 10,
+    backgroundColor: '#007bff'
+  },
+  modalBackground: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)'
+  },
 });
 
 export default Main;
