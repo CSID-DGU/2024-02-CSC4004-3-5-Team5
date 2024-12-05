@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "KnightGrow",
+    "name": "기사 키우기",
     "slug": "KnightGrow",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -15,7 +15,8 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.team5.knightGrow",
-      "buildNumber": "1.0.0"
+      "buildNumber": "1.0.0",
+      "name": "기사 키우기"
     },
     "android": {
       "permissions": [
@@ -27,7 +28,9 @@
         "versionCode": 1
       },
       "usesCleartextTraffic": true,
-      "package": "com.team5.knightGrow"
+      "package": "com.team5.knightGrow",
+      "name": "Knight Grow",
+      "displayName": "기사 키우기"
     },
     "web": {
       "favicon": "./assets/favicon.png"
