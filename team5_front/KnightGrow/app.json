@@ -1,0 +1,59 @@
+{
+  "expo": {
+    "name": "KnightGrow",
+    "slug": "KnightGrow",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/Loading.png",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.team5.knightGrow",
+      "buildNumber": "1.0.0"
+    },
+    "android": {
+      "permissions": [
+        "android.permission.INTERNET"
+      ],
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff",
+        "versionCode": 1
+      },
+      "usesCleartextTraffic": true,
+      "package": "com.team5.knightGrow"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "1a360e72-e750-434a-add2-ea3d143aaf6c",
+        "apiUrlNews": "http://211.188.49.69:8081",
+        "apiUrlChatbot": "http://220.116.240.223:5001",
+        "disableFlipper": true
+      }
+    },
+    "plugins": [
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "minSdkVersion": 24,
+            "compileSdkVersion": 34,
+            "targetSdkVersion": 34,
+            "buildToolsVersion": "34.0.0",
+            "usesCleartextTraffic": true
+          }
+        }
+      ]
+    ],
+    "owner": "qlsk"
+  }
+}
