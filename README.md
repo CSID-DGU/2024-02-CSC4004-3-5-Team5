@@ -43,7 +43,7 @@
 # 🎮 개발 환경
 <img src="https://img.shields.io/badge/React%20Native-61DAFB?style=for-the-badge&logo=React&logoColor=white"/><img src="https://img.shields.io/badge/Spring%20Boot-6DB33F?style=for-the-badge&logo=Spring%20Boot&logoColor=black"/><img src="https://img.shields.io/badge/LangChain-1C3C3C?style=for-the-badge&logo=LangChain&logoColor=white"/>
 
-<img src="https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=MySQL&logoColor=white"/><img src="https://img.shields.io/badge/Chroma%20DB-FC521F?style=for-the-badge&logo=ChromaDB&logoColor=white"><img src="https://img.shields.io/badge/OpenAI-000002?style=for-the-badge&logo=OpenAI&logoColor=white"/><img src="https://img.shields.io/badge/Naver-03C75A?style=for-the-badge&logo=Naver&logoColor=white">
+<img src="https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=MySQL&logoColor=white"/><img src="https://img.shields.io/badge/Chroma%20DB-FC521F?style=for-the-badge&logo=ChromaDB&logoColor=white"><img src="https://img.shields.io/badge/OpenAI-000002?style=for-the-badge&logo=OpenAI&logoColor=white"/>
 
 <img src="https://img.shields.io/badge/Expo-000002?style=for-the-badge&logo=Expo&logoColor=white"/><img src="https://img.shields.io/badge/Amazon%20EC2-FF9900?style=for-the-badge&logo=Amazon%20EC2&logoColor=black">
 
