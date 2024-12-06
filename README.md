@@ -1,7 +1,7 @@
 # 2024-02-CSC4004-3-5-Team5
 2024-02 공개SW프로젝트 Team5 - 기사 키우기
 
-# 🎮기술스택
+# 🎮 기술스택
 <div>
   <img src="https://img.shields.io/badge/React Native-61DAFB?style=for-the-badge&logo=React&logoColor=black"/>
   <img src="https://img.shields.io/badge/springboot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white">
