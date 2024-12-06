@@ -17,13 +17,6 @@
 
 <br><br>
 
-# 🎮 아키텍처 설계
-<img src ='https://github.com/CSID-DGU/2024-02-CSC4004-3-5-Team5/blob/main/Image/Architecture.png' width='500px' height='400px'>
-
-
-
-<br><br>
-
 # 🎮 주요 기능
 ### 1. 회원가입 및 로그인 기능
 <img src ='https://github.com/CSID-DGU/2024-02-CSC4004-3-5-Team5/blob/main/Image/%EA%B3%B5%EA%B0%9CSW%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8_3%EB%B6%84%EB%B0%98_5%EC%A1%B0_%EC%B5%9C%EC%A2%85%EC%A0%9C%EC%95%88%EC%84%9C_page-0007.jpg' width='700px' height='400px'>
@@ -37,6 +30,12 @@
 
 ### 4. 챗봇 기능
 <img src ='https://github.com/CSID-DGU/2024-02-CSC4004-3-5-Team5/blob/main/Image/%EA%B3%B5%EA%B0%9CSW%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8_3%EB%B6%84%EB%B0%98_5%EC%A1%B0_%EC%B5%9C%EC%A2%85%EC%A0%9C%EC%95%88%EC%84%9C_page-0011.jpg' width='700px' height='400px'>
+
+<br><br>
+
+
+# 🎮 아키텍처 설계
+<img src ='https://github.com/CSID-DGU/2024-02-CSC4004-3-5-Team5/blob/main/Image/Architecture.png' width='500px' height='400px'>
 
 <br><br>
 
