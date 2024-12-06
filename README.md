@@ -5,7 +5,7 @@
 
 # 기사 키우기 게임 프로젝트
 
-<img src ='' width='800px' height='450px'>
+<img src ='https://github.com/CSID-DGU/2024-02-CSC4004-3-5-Team5/blob/main/ppt/%E1%84%80%E1%85%A9%E1%86%BC%E1%84%80%E1%85%A2SW%E1%84%91%E1%85%B3%E1%84%85%E1%85%A9%E1%84%8C%E1%85%A6%E1%86%A8%E1%84%90%E1%85%B3_3%E1%84%87%E1%85%AE%E1%86%AB%E1%84%87%E1%85%A1%E1%86%AB_5%E1%84%8C%E1%85%A9_%E1%84%8E%E1%85%AC%E1%84%8C%E1%85%A9%E1%86%BC%E1%84%8C%E1%85%A6%E1%84%8B%E1%85%A1%E1%86%AB%E1%84%89%E1%85%A5_page-0001.jpg' width='800px' height='450px'>
 
 
 <br><br>
